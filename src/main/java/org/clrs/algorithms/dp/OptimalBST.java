@@ -8,6 +8,8 @@ public class OptimalBST {
 		final int n = 5;
 		final Tables tables = optimalBst(p, q, n);
 		System.out.println(String.format("Search cost of Optimal BST is: %s", tables.e[1][n]));
+		// Structure of an optimal binary search tree.
+		constructOptimalBst(tables.root, 1, n);
 	}
 
 	private static final Tables optimalBst(double[] p, double[] q, int n) {
@@ -44,7 +46,27 @@ public class OptimalBST {
 	}
 
 	private static final void constructOptimalBst(int[][] root, int i, int j) {
+		// Get the point at which we split.
+		final int r = root[i][j];
+		// Print the root.
+		if (i == 1 && j == root.length - 1)
+			System.out.println(String.format("k%d is the root", r));
 
+		// Print the left subtree.
+		if (r - 1 < i)
+			System.out.println(String.format("d%d is the left child of k%d", r - 1, i));
+		else {
+			System.out.println(String.format("k%d is the left child of k%d", root[i][r - 1], r));
+			constructOptimalBst(root, i, r - 1);
+		}
+
+		// Print the right subtree.
+		if (r + 1 > j)
+			System.out.println(String.format("d%d is the right child of k%d", j, j));
+		else {
+			System.out.println(String.format("k%d is the right child of k%d", root[r + 1][j], r));
+			constructOptimalBst(root, r + 1, j);
+		}
 	}
 
 	static class Tables {
