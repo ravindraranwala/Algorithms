@@ -1,6 +1,6 @@
 package org.clrs.algorithms.dp;
 
-public class OptimalBST {
+public final class OptimalBST {
 
 	public static void main(String[] args) {
 		final double[] p = new double[] { Double.NaN, 0.15, 0.10, 0.05, 0.1, 0.2 };

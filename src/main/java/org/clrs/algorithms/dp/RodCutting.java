@@ -1,6 +1,6 @@
 package org.clrs.algorithms.dp;
 
-public class RodCutting {
+public final class RodCutting {
 
 	public static void main(String[] args) {
 		double[] p = new double[] { 0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
@@ -44,5 +44,4 @@ public class RodCutting {
 			this.s = s;
 		}
 	}
-
 }
