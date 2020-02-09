@@ -69,7 +69,7 @@ public class OptimalBST {
 		}
 	}
 
-	static class Tables {
+	static final class Tables {
 		final double[][] e;
 		final int[][] root;
 
