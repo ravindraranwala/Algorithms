@@ -27,7 +27,7 @@ public final class MatrixChainOrder {
 		final int[][] m = new int[n + 1][n + 1];
 		final int[][] s = new int[n][n + 1];
 
-		for (int i = 0; i <= n; i++)
+		for (int i = 1; i <= n; i++)
 			m[i][i] = 0;
 
 		// l is the chain length
