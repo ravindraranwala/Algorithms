@@ -9,7 +9,7 @@ public final class OptimalBST {
 		final Tables tables = optimalBst(p, q, n);
 		System.out.println(String.format("Search cost of Optimal BST is: %s", tables.e[1][n]));
 		// Structure of an optimal binary search tree.
-		constructOptimalBst(tables.root, 1, n);
+		constructOptimalBst(tables.root);
 	}
 
 	private static final Tables optimalBst(double[] p, double[] q, int n) {
@@ -45,27 +45,31 @@ public final class OptimalBST {
 		return new Tables(e, root);
 	}
 
-	private static final void constructOptimalBst(int[][] root, int i, int j) {
-		// Get the point at which we split.
-		final int r = root[i][j];
-		// Print the root.
-		if (i == 1 && j == root.length - 1)
-			System.out.println(String.format("k%d is the root", r));
+	private static void constructOptimalBst(int[][] root) {
+		final int n = root.length - 1;
+		final int r = root[1][n];
+		System.out.println(String.format("k%d is the root", r));
 
-		// Print the left subtree.
-		if (r - 1 < i)
-			System.out.println(String.format("d%d is the left child of k%d", r - 1, i));
+		printSubtree(root, 1, n);
+	}
+
+	private static void printSubtree(int[][] root, int i, int j) {
+		final int r = root[i][j];
+		// print left subtree
+		final int current = root[i][j];
+		if (r == i)
+			System.out.println(String.format("d%d is the left child of k%d", r - 1, current));
 		else {
-			System.out.println(String.format("k%d is the left child of k%d", root[i][r - 1], r));
-			constructOptimalBst(root, i, r - 1);
+			System.out.println(String.format("k%d is the left child of k%d", root[i][r - 1], current));
+			printSubtree(root, i, r - 1);
 		}
 
-		// Print the right subtree.
-		if (r + 1 > j)
-			System.out.println(String.format("d%d is the right child of k%d", j, j));
+		// print the right subtree
+		if (r == j)
+			System.out.println(String.format("d%d is the right child of k%d", j, current));
 		else {
-			System.out.println(String.format("k%d is the right child of k%d", root[r + 1][j], r));
-			constructOptimalBst(root, r + 1, j);
+			System.out.println(String.format("k%d is the right child of k%d", root[r + 1][j], current));
+			printSubtree(root, r + 1, j);
 		}
 	}
 
