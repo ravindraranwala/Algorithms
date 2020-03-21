@@ -1,15 +1,35 @@
 package org.clrs.algorithms.bst;
 
-public final class BST<T extends Comparable<T>> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public final class BST<T extends Comparable<T>> implements Iterable<T> {
 	private TreeNode<T> root = null;
 
 	public static void main(String[] args) {
-		BST<Integer> bst = new BST<>();
+		final BST<Integer> bst = new BST<>();
 		bst.insert(4);
 		bst.insert(2);
 		bst.insert(7);
 		bst.insert(1);
 		bst.insert(5);
+		System.out.println("Min value of the tree: " + bst.min());
+		System.out.println("Max value of the tree: " + bst.max());
+		System.out.println("Successor of 5 is: " + bst.successor(5));
+		System.out.println(String.format("Node with key %d found: %b", 2, bst.search(2)));
+		System.out.println(String.format("Node with key %d found: %b", 3, bst.search(3)));
+		bst.print();
+		bst.delete(7);
+		bst.insert(8);
+		System.out.println();
+		bst.print();
+		System.out.println();
+		for (final Iterator<Integer> it = bst.iterator(); it.hasNext();) {
+			Integer val = it.next();
+			if (val == 5)
+				it.remove();
+			System.out.println(val);
+		}
 		bst.print();
 	}
 
@@ -160,5 +180,43 @@ public final class BST<T extends Comparable<T>> {
 		TreeNode(T x) {
 			key = x;
 		}
+	}
+
+	class BSTIterator implements Iterator<T> {
+		private TreeNode<T> current;
+		private TreeNode<T> next;
+
+		BSTIterator() {
+			current = null;
+			next = treeMinimum(root);
+		}
+
+		@Override
+		public boolean hasNext() {
+			return next != null;
+		}
+
+		@Override
+		public T next() {
+			if (next == null)
+				throw new NoSuchElementException();
+			current = next;
+			next = treeSuccessor(next);
+			return current.key;
+		}
+
+		@Override
+		public void remove() {
+			if (current == null)
+				throw new IllegalStateException();
+			treeDelete(current);
+			// current is already deleted, we should not allow to delete it again.
+			current = null;
+		}
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new BSTIterator();
 	}
 }
