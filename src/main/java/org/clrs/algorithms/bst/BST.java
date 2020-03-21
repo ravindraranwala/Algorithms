@@ -15,6 +15,8 @@ public final class BST<T extends Comparable<T>> {
 
 	public void delete(T key) {
 		final TreeNode<T> nodeToDelete = iterativeTreeSearch(key);
+		if (nodeToDelete == null)
+			throw new IllegalArgumentException("Invalid key: " + key);
 		treeDelete(nodeToDelete);
 	}
 
