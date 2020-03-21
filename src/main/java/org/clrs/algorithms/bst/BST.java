@@ -3,12 +3,14 @@ package org.clrs.algorithms.bst;
 public final class BST<T extends Comparable<T>> {
 	private TreeNode<T> root = null;
 
-	public BST(T key) {
-		this.root = new TreeNode<>(key);
-	}
-
 	public static void main(String[] args) {
-
+		BST<Integer> bst = new BST<>();
+		bst.insert(4);
+		bst.insert(2);
+		bst.insert(7);
+		bst.insert(1);
+		bst.insert(5);
+		bst.print();
 	}
 
 	public void delete(T key) {
@@ -134,7 +136,7 @@ public final class BST<T extends Comparable<T>> {
 		else
 			return treeSearch(x.right, k);
 	}
-	
+
 	public void print() {
 		inorderTreeWalk(root);
 	}
