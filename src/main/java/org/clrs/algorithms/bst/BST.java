@@ -1,37 +1,42 @@
 package org.clrs.algorithms.bst;
 
-public final class BST {
-	TreeNode root = null;
+public final class BST<T extends Comparable<T>> {
+	private TreeNode<T> root = null;
 
-	public BST(TreeNode root) {
-		this.root = root;
+	public BST(T key) {
+		this.root = new TreeNode<>(key);
 	}
 
 	public static void main(String[] args) {
 
 	}
 
-	public static void treeDelete(BST t, TreeNode z) {
+	public void delete(T key) {
+		final TreeNode<T> nodeToDelete = iterativeTreeSearch(key);
+		treeDelete(nodeToDelete);
+	}
+
+	private void treeDelete(TreeNode<T> z) {
 		if (z.left == null)
-			transplant(t, z, z.right);
+			transplant(z, z.right);
 		else if (z.right == null)
-			transplant(t, z, z.left);
+			transplant(z, z.left);
 		else {
-			TreeNode y = treeMinimum(z.right);
+			TreeNode<T> y = treeMinimum(z.right);
 			if (y.p != z) {
-				transplant(t, y, y.right);
+				transplant(y, y.right);
 				y.right = z.right;
 				y.right.p = y;
 			}
-			transplant(t, z, y);
+			transplant(z, y);
 			y.left = z.left;
 			y.left.p = y;
 		}
 	}
 
-	public static void transplant(BST t, TreeNode u, TreeNode v) {
+	private void transplant(TreeNode<T> u, TreeNode<T> v) {
 		if (u.p == null)
-			t.root = v;
+			root = v;
 		else if (u.p.left == u)
 			u.p.left = v;
 		else
@@ -41,13 +46,17 @@ public final class BST {
 			v.p = u.p;
 	}
 
-	public static void treeInsert(BST t, TreeNode z) {
-		TreeNode y = null;
-		TreeNode x = t.root;
+	public void insert(T key) {
+		treeInsert(new TreeNode<>(key));
+	}
+
+	private void treeInsert(TreeNode<T> z) {
+		TreeNode<T> y = null;
+		TreeNode<T> x = this.root;
 
 		while (x != null) {
 			y = x;
-			if (z.key < x.key)
+			if (z.key.compareTo(x.key) < 0)
 				x = x.left;
 			else
 				x = x.right;
@@ -55,18 +64,25 @@ public final class BST {
 
 		z.p = y;
 		if (y == null)
-			t.root = z; // tree T was empty
-		else if (z.key < y.key)
+			this.root = z; // tree T was empty
+		else if (z.key.compareTo(y.key) < 0)
 			y.left = z;
 		else
 			y.right = z;
 	}
 
-	public static TreeNode treeSuccessor(TreeNode x) {
+	public T successor(T key) {
+		final TreeNode<T> currNode = iterativeTreeSearch(key);
+		if (currNode == null)
+			throw new IllegalArgumentException("Invalid key: " + key);
+		return treeSuccessor(currNode).key;
+	}
+
+	private TreeNode<T> treeSuccessor(TreeNode<T> x) {
 		if (x.right != null)
 			return treeMinimum(x.right);
 
-		TreeNode y = x.p;
+		TreeNode<T> y = x.p;
 		while (y != null && y.right == x) {
 			x = y;
 			y = y.p;
@@ -74,21 +90,31 @@ public final class BST {
 		return y;
 	}
 
-	public static TreeNode treeMinimum(TreeNode x) {
+	public T min() {
+		return treeMinimum(root).key;
+	}
+
+	private TreeNode<T> treeMinimum(TreeNode<T> x) {
 		while (x.left != null)
 			x = x.left;
 		return x;
 	}
 
-	public static TreeNode treeMaximum(TreeNode x) {
+	public T max() {
+		return treeMaximum(root).key;
+	}
+
+	// Need to find the predecessor of a given node.
+	private TreeNode<T> treeMaximum(TreeNode<T> x) {
 		while (x.right != null)
 			x = x.right;
 		return x;
 	}
 
-	public static TreeNode iterativeTreeSearch(TreeNode x, int k) {
-		while (x != null && x.key != k) {
-			if (k < x.key)
+	private TreeNode<T> iterativeTreeSearch(T k) {
+		TreeNode<T> x = root;
+		while (x != null && !x.key.equals(k)) {
+			if (k.compareTo(x.key) < 0)
 				x = x.left;
 			else
 				x = x.right;
@@ -96,16 +122,24 @@ public final class BST {
 		return x;
 	}
 
-	public static TreeNode treeSearch(TreeNode x, int k) {
-		if (x == null || k == x.key)
+	public TreeNode<T> search(T k) {
+		return treeSearch(root, k);
+	}
+
+	private TreeNode<T> treeSearch(TreeNode<T> x, T k) {
+		if (x == null || k.equals(x.key))
 			return x;
-		if (k < x.key)
+		if (k.compareTo(x.key) < 0)
 			return treeSearch(x.left, k);
 		else
 			return treeSearch(x.right, k);
 	}
+	
+	public void print() {
+		inorderTreeWalk(root);
+	}
 
-	public static void inorderTreeWalk(TreeNode x) {
+	private void inorderTreeWalk(TreeNode<T> x) {
 		if (x != null) {
 			inorderTreeWalk(x.left);
 			System.out.print(x.key);
@@ -113,13 +147,13 @@ public final class BST {
 		}
 	}
 
-	static class TreeNode {
-		int key;
-		TreeNode left;
-		TreeNode right;
-		TreeNode p;
+	static class TreeNode<T extends Comparable<T>> {
+		T key;
+		TreeNode<T> left;
+		TreeNode<T> right;
+		TreeNode<T> p;
 
-		TreeNode(int x) {
+		TreeNode(T x) {
 			key = x;
 		}
 	}
