@@ -2,7 +2,7 @@ package org.clrs.algorithms.rbt;
 
 import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.*;
 
-public final class RBT<T extends Comparable<T>> {
+public final class RBT<T extends Comparable<? super T>> {
 	private final TreeNode<T> nil;
 	private TreeNode<T> root;
 
@@ -120,19 +120,19 @@ public final class RBT<T extends Comparable<T>> {
 		y.p = x;
 	}
 
-	static class TreeNode<T extends Comparable<T>> {
-		private final T key;
-		private TreeNode<T> left;
-		private TreeNode<T> right;
-		private TreeNode<T> p;
+	static class TreeNode<S extends Comparable<? super S>> {
+		private final S key;
+		private TreeNode<S> left;
+		private TreeNode<S> right;
+		private TreeNode<S> p;
 		private Color color;
 
-		TreeNode(T key) {
+		TreeNode(S key) {
 			super();
 			this.key = key;
 		}
 
-		public TreeNode(T key, Color color) {
+		public TreeNode(S key, Color color) {
 			super();
 			this.key = key;
 			this.color = color;

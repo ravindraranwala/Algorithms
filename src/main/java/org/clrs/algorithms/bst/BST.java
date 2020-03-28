@@ -3,7 +3,7 @@ package org.clrs.algorithms.bst;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class BST<T extends Comparable<T>> implements Iterable<T> {
+public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 	private TreeNode<T> root = null;
 
 	public static void main(String[] args) {
@@ -171,13 +171,13 @@ public final class BST<T extends Comparable<T>> implements Iterable<T> {
 		}
 	}
 
-	static class TreeNode<T extends Comparable<T>> {
-		T key;
-		TreeNode<T> left;
-		TreeNode<T> right;
-		TreeNode<T> p;
+	static class TreeNode<S extends Comparable<? super S>> {
+		S key;
+		TreeNode<S> left;
+		TreeNode<S> right;
+		TreeNode<S> p;
 
-		TreeNode(T x) {
+		TreeNode(S x) {
 			key = x;
 		}
 	}
