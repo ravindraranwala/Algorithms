@@ -1,6 +1,9 @@
 package org.clrs.algorithms.rbt;
 
-import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.*;
+import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.BLACK;
+import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.RED;
+
+import org.clrs.algorithms.rbt.RBT.TreeNode.Color;
 
 public final class RBT<T extends Comparable<? super T>> {
 	private final TreeNode<T> nil;
@@ -118,6 +121,56 @@ public final class RBT<T extends Comparable<? super T>> {
 			y.p.right = x;
 		x.right = y;
 		y.p = x;
+	}
+
+	private void rbTransplant(final TreeNode<T> u, final TreeNode<T> v) {
+		if (u.p == nil)
+			root = v;
+		else if (u.p.left == u)
+			u.p.left = v;
+		else
+			u.p.right = v;
+		v.p = u.p;
+	}
+
+	private void rbDelete(final TreeNode<T> z) {
+		TreeNode<T> y = z;
+		Color yOriginalColor = y.color;
+		TreeNode<T> x;
+		if (z.left == nil) {
+			x = z.right;
+			rbTransplant(z, z.right);
+		} else if (z.right == nil) {
+			x = z.left;
+			rbTransplant(z, z.left);
+		} else {
+			y = treeMinimum(z.right);
+			yOriginalColor = y.color;
+			x = y.right;
+			if (y.p == z)
+				x.p = y;
+			else {
+				rbTransplant(y, y.right);
+				y.right = z.right;
+				y.right.p = y;
+			}
+			rbTransplant(z, y);
+			y.left = z.left;
+			y.left.p = y;
+			y.color = z.color;
+		}
+		if (yOriginalColor == BLACK)
+			rbDeleteFixup(x); // Fix any violations of Red-Black properties.
+	}
+
+	private void rbDeleteFixup(TreeNode<T> x) {
+
+	}
+
+	private TreeNode<T> treeMinimum(TreeNode<T> x) {
+		while (x.left != null)
+			x = x.left;
+		return x;
 	}
 
 	static class TreeNode<S extends Comparable<? super S>> {
