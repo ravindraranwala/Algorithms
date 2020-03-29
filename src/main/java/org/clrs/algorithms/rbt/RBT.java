@@ -76,8 +76,8 @@ public final class RBT<T extends Comparable<? super T>> {
 					z.p.p.color = RED;
 					z = z.p.p;
 				} else {
-					// case 2
 					if (z == z.p.right) {
+						// case 2
 						z = z.p;
 						leftRotate(z);
 					}
@@ -163,8 +163,65 @@ public final class RBT<T extends Comparable<? super T>> {
 			rbDeleteFixup(x); // Fix any violations of Red-Black properties.
 	}
 
+	// Restores red-black properties.
 	private void rbDeleteFixup(TreeNode<T> x) {
-
+		while (x != root && x.color == BLACK) {
+			if (x == x.p.left) {
+				TreeNode<T> w = x.p.right;
+				if (w.color == RED) {
+					// case 1
+					w.color = BLACK;
+					x.p.color = RED;
+					leftRotate(x.p);
+					w = x.p.right;
+				}
+				if (w.left.color == BLACK && w.right.color == BLACK) {
+					// case 2
+					w.color = RED;
+					x = x.p;
+				} else {
+					if (w.right.color == BLACK) {
+						// case 3: w's left child is red
+						w.left.color = BLACK;
+						w.color = RED;
+						rightRotate(w);
+						w = x.p.right;
+					}
+					// case 4: w's right child is red
+					w.color = x.p.color;
+					x.p.color = BLACK;
+					w.right.color = BLACK;
+					leftRotate(x.p);
+					x = root;
+				}
+			} else {
+				// symmetric to the then clause.
+				TreeNode<T> w = x.p.left;
+				if (w.color == RED) {
+					// case 1
+					w.color = BLACK;
+					x.p.color = RED;
+					leftRotate(x.p);
+					w = x.p.left;
+				}
+				if (w.left.color == BLACK && w.right.color == BLACK) {
+					w.color = RED;
+					x = x.p;
+				} else {
+					if (w.right.color == BLACK) {
+						w.left.color = BLACK;
+						w.color = RED;
+						rightRotate(w);
+						w = x.p.left;
+					}
+					w.color = x.p.color;
+					x.p.color = BLACK;
+					w.right.color = BLACK;
+					leftRotate(x.p);
+					x = root;
+				}
+			}
+		}
 	}
 
 	private TreeNode<T> treeMinimum(TreeNode<T> x) {
