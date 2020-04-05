@@ -10,11 +10,27 @@ public final class RBT<T extends Comparable<? super T>> {
 	private TreeNode<T> root;
 
 	public RBT() {
-		nil = new TreeNode<>(null);
+		nil = new TreeNode<>(null, BLACK);
+		root = nil;
 	}
 
 	public static void main(String[] args) {
-		RBT<Integer> rbt = new RBT<>();
+		// sample driver code obtained from this site:
+		// https://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/
+		final RBT<Integer> rbt = new RBT<>();
+		rbt.insert(7);
+		rbt.insert(3);
+		rbt.insert(18);
+		rbt.insert(10);
+		rbt.insert(22);
+		rbt.insert(8);
+		rbt.insert(11);
+		rbt.insert(26);
+		rbt.insert(2);
+		rbt.insert(6);
+		rbt.insert(13);
+
+		rbt.print();
 	}
 
 	public void insert(T key) {
@@ -76,18 +92,19 @@ public final class RBT<T extends Comparable<? super T>> {
 					z.p.p.color = RED;
 					z = z.p.p;
 				} else {
-					if (z == z.p.right) {
+					if (z == z.p.left) {
 						// case 2
 						z = z.p;
-						leftRotate(z);
+						rightRotate(z);
 					}
 					// case 3
 					z.p.color = BLACK;
 					z.p.p.color = RED;
-					rightRotate(z.p.p);
+					leftRotate(z.p.p);
 				}
 			}
 		}
+		root.color = BLACK;
 	}
 
 	private void leftRotate(TreeNode<T> x) {
@@ -131,6 +148,24 @@ public final class RBT<T extends Comparable<? super T>> {
 		else
 			u.p.right = v;
 		v.p = u.p;
+	}
+
+	public void delete(T key) {
+		final TreeNode<T> nodeToDelete = iterativeTreeSearch(key);
+		if (nodeToDelete == nil)
+			throw new IllegalArgumentException("Invalid key: " + key);
+		rbDelete(nodeToDelete);
+	}
+
+	private TreeNode<T> iterativeTreeSearch(T k) {
+		TreeNode<T> x = root;
+		while (x != nil && !x.key.equals(k)) {
+			if (k.compareTo(x.key) < 0)
+				x = x.left;
+			else
+				x = x.right;
+		}
+		return x;
 	}
 
 	private void rbDelete(final TreeNode<T> z) {
@@ -225,9 +260,28 @@ public final class RBT<T extends Comparable<? super T>> {
 	}
 
 	private TreeNode<T> treeMinimum(TreeNode<T> x) {
-		while (x.left != null)
+		while (x.left != nil)
 			x = x.left;
 		return x;
+	}
+
+	public void print() {
+		System.out.println(String.format("%d is the root", root.key));
+		printSubtree(root);
+	}
+
+	private void printSubtree(TreeNode<T> node) {
+		final TreeNode<T> left = node.left;
+		if (left != nil) {
+			System.out.println(String.format("%d is the left child of %d", left.key, node.key));
+			printSubtree(left);
+		}
+		final TreeNode<T> right = node.right;
+		if (right != nil) {
+			System.out.println(String.format("%d is the right child of %d", right.key, node.key));
+			printSubtree(right);
+		}
+
 	}
 
 	static class TreeNode<S extends Comparable<? super S>> {
