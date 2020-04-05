@@ -30,6 +30,14 @@ public final class RBT<T extends Comparable<? super T>> {
 		rbt.insert(6);
 		rbt.insert(13);
 
+		// rbt.print();
+
+		rbt.delete(18);
+		rbt.delete(11);
+		rbt.delete(3);
+		rbt.delete(10);
+		rbt.delete(22);
+
 		rbt.print();
 	}
 
@@ -143,7 +151,7 @@ public final class RBT<T extends Comparable<? super T>> {
 	private void rbTransplant(final TreeNode<T> u, final TreeNode<T> v) {
 		if (u.p == nil)
 			root = v;
-		else if (u.p.left == u)
+		else if (u == u.p.left)
 			u.p.left = v;
 		else
 			u.p.right = v;
@@ -236,27 +244,28 @@ public final class RBT<T extends Comparable<? super T>> {
 					// case 1
 					w.color = BLACK;
 					x.p.color = RED;
-					leftRotate(x.p);
+					rightRotate(x.p);
 					w = x.p.left;
 				}
 				if (w.left.color == BLACK && w.right.color == BLACK) {
 					w.color = RED;
 					x = x.p;
 				} else {
-					if (w.right.color == BLACK) {
-						w.left.color = BLACK;
+					if (w.left.color == BLACK) {
+						w.right.color = BLACK;
 						w.color = RED;
-						rightRotate(w);
+						leftRotate(w);
 						w = x.p.left;
 					}
 					w.color = x.p.color;
 					x.p.color = BLACK;
-					w.right.color = BLACK;
-					leftRotate(x.p);
+					w.left.color = BLACK;
+					rightRotate(x.p);
 					x = root;
 				}
 			}
 		}
+		x.color = BLACK;
 	}
 
 	private TreeNode<T> treeMinimum(TreeNode<T> x) {
@@ -266,19 +275,21 @@ public final class RBT<T extends Comparable<? super T>> {
 	}
 
 	public void print() {
-		System.out.println(String.format("%d is the root", root.key));
+		System.out.println(String.format("%d is the %s color root", root.key, root.color));
 		printSubtree(root);
 	}
 
 	private void printSubtree(TreeNode<T> node) {
 		final TreeNode<T> left = node.left;
 		if (left != nil) {
-			System.out.println(String.format("%d is the left child of %d", left.key, node.key));
+			System.out
+					.println(String.format("%d is the left child of %d with color %s", left.key, node.key, left.color));
 			printSubtree(left);
 		}
 		final TreeNode<T> right = node.right;
 		if (right != nil) {
-			System.out.println(String.format("%d is the right child of %d", right.key, node.key));
+			System.out.println(
+					String.format("%d is the right child of %d with color %s", right.key, node.key, right.color));
 			printSubtree(right);
 		}
 
