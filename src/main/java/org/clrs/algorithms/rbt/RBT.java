@@ -15,28 +15,20 @@ public final class RBT<T extends Comparable<? super T>> {
 	}
 
 	public static void main(String[] args) {
-		// sample driver code obtained from this site:
-		// https://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/
+		// Sample driver code obtained from the CLRS text book chapter exercises.
 		final RBT<Integer> rbt = new RBT<>();
-		rbt.insert(7);
-		rbt.insert(3);
-		rbt.insert(18);
-		rbt.insert(10);
-		rbt.insert(22);
+		rbt.insert(41);
+		rbt.insert(38);
+		rbt.insert(31);
+		rbt.insert(12);
+		rbt.insert(19);
 		rbt.insert(8);
-		rbt.insert(11);
-		rbt.insert(26);
-		rbt.insert(2);
-		rbt.insert(6);
-		rbt.insert(13);
-
-		// rbt.print();
-
-		rbt.delete(18);
-		rbt.delete(11);
-		rbt.delete(3);
-		rbt.delete(10);
-		rbt.delete(22);
+		rbt.delete(8);
+		rbt.delete(12);
+		rbt.delete(19);
+		rbt.delete(31);
+		rbt.delete(38);
+		rbt.delete(41);
 
 		rbt.print();
 	}
@@ -275,8 +267,12 @@ public final class RBT<T extends Comparable<? super T>> {
 	}
 
 	public void print() {
-		System.out.println(String.format("%d is the %s color root", root.key, root.color));
-		printSubtree(root);
+		if (root == nil)
+			System.out.println(String.format("%s is the %s color root", "NIL", root.color));
+		else {
+			System.out.println(String.format("%d is the %s color root", root.key, root.color));
+			printSubtree(root);
+		}
 	}
 
 	private void printSubtree(TreeNode<T> node) {
