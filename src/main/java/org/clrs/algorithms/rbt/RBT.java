@@ -23,14 +23,15 @@ public final class RBT<T extends Comparable<? super T>> {
 		rbt.insert(12);
 		rbt.insert(19);
 		rbt.insert(8);
+		rbt.print();
+		
 		rbt.delete(8);
 		rbt.delete(12);
+		rbt.print();
 		rbt.delete(19);
 		rbt.delete(31);
 		rbt.delete(38);
 		rbt.delete(41);
-
-		rbt.print();
 	}
 
 	public void insert(T key) {
