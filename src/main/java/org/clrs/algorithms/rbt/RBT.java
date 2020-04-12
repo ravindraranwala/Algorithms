@@ -10,7 +10,8 @@ public final class RBT<T extends Comparable<? super T>> {
 	private TreeNode<T> root;
 
 	public RBT() {
-		nil = new TreeNode<>(null, BLACK);
+		nil = new TreeNode<>(null);
+		nil.color = BLACK;
 		root = nil;
 	}
 
@@ -302,12 +303,6 @@ public final class RBT<T extends Comparable<? super T>> {
 		TreeNode(S key) {
 			super();
 			this.key = key;
-		}
-
-		public TreeNode(S key, Color color) {
-			super();
-			this.key = key;
-			this.color = color;
 		}
 
 		static enum Color {
