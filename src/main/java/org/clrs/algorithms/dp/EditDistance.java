@@ -113,7 +113,7 @@ public final class EditDistance {
 			}
 		};
 
-		private static final String PLACE_HOLDER = "_";
+		private static final char PLACE_HOLDER = '_';
 
 		abstract void apply(StringBuilder alignOne, StringBuilder alignTwo, char source, char target);
 	}
