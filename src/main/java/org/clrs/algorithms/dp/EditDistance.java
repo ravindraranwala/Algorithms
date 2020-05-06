@@ -1,12 +1,15 @@
 package org.clrs.algorithms.dp;
 
-import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.*;
+import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.COPY;
+import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.DELETE;
+import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.INSERT;
+import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.REPLACE;
 
 public final class EditDistance {
 	public static void main(String[] args) {
 		// int minDist = editDistance("mart", "karma");
-		String x = "intention";
-		String y = "execution";
+		String x = "";
+		String y = "a";
 		int[][] c = editDistance(x, y);
 		int minDist = c[x.length()][y.length()];
 		System.out.println(String.format("Min Edit Distance: %d", minDist));
@@ -46,7 +49,7 @@ public final class EditDistance {
 		// Base case of our recursion
 		if (i == 0 && j == 0)
 			return;
-		
+
 		int minCost = Integer.MAX_VALUE, iPrev = -1, jPrev = -1;
 		TRANSFORMATION t = null;
 		/*
@@ -54,14 +57,15 @@ public final class EditDistance {
 		 * confronted with ties, since it is the most optimal operation.
 		 */
 		// COPY or REPLACE operation
-		if (i > 0 && j > 0 && c[i - 1][j - 1] < minCost) {
+		if (i > 0 && j > 0) {
 			iPrev = i - 1;
 			jPrev = j - 1;
 			minCost = c[i - 1][j - 1];
-			if (x.charAt(i - 1) != y.charAt(j - 1))
-				t = REPLACE;
-			else
+			if (x.charAt(i - 1) == y.charAt(j - 1))
 				t = COPY;
+
+			else
+				t = REPLACE;
 		}
 		// Assume DELETE is the optimal operation
 		if (i > 0 && c[i - 1][j] < minCost) {
@@ -72,14 +76,15 @@ public final class EditDistance {
 		}
 		// INSERT is the optimal operation so far
 		if (j > 0 && c[i][j - 1] < minCost) {
-			minCost = c[i][j - 1];
-			t = INSERT;
 			iPrev = i;
 			jPrev = j - 1;
+			minCost = c[i][j - 1];
+			t = INSERT;
 		}
 
 		printAlignment(c, x, y, iPrev, jPrev, alignOne, alignTwo);
-		t.apply(alignOne, alignTwo, x.charAt(i - 1), y.charAt(j - 1));
+		final char nullCh = '\0';
+		t.apply(alignOne, alignTwo, i > 0 ? x.charAt(i - 1) : nullCh, j > 0 ? y.charAt(j - 1) : nullCh);
 		System.out.print(t + (i == x.length() && j == y.length() ? "" : ", "));
 	}
 
