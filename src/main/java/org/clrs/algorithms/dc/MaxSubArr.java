@@ -1,6 +1,6 @@
 package org.clrs.algorithms.dc;
 
-public class MaxSubArr {
+public final class MaxSubArr {
 
 	public static void main(String[] args) {
 		final int[] delta = new int[] { 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
@@ -13,7 +13,7 @@ public class MaxSubArr {
 		if (low == high)
 			return new int[] { low, high, a[low] }; // base case, only one element
 		else {
-			final int mid = (int) Math.floor((low + high) / 2.0);
+			final int mid = (low + high) / 2;
 			final int[] left = findMaxSubArr(a, low, mid);
 			final int[] right = findMaxSubArr(a, mid + 1, high);
 			final int[] crossing = findMaxCrossingSubArr(a, low, mid, high);
