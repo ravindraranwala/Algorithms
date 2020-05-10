@@ -3,10 +3,14 @@ package org.clrs.algorithms.dc;
 public final class MaxSubArr {
 
 	public static void main(String[] args) {
-		final int[] delta = new int[] { 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
-		int[] result = findMaxSubArr(delta, 0, delta.length - 1);
-		System.out.println(
-				String.format("Low index: %d, High index: %d, Max profit per share $: %d", result[0], result[1], result[2]));
+		final int[] change = new int[] { 0, 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
+		int[] result = findMaxSubArr(change, 0, change.length - 1);
+		System.out.println(String.format("Low index: %d, High index: %d, Max profit per share $: %d", result[0],
+				result[1], result[2]));
+		final int[] price = new int[] { 100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97 };
+		result = findMaxSubArrBF(price);
+		System.out.println(String.format("Buy at the EOD: %d, Sell at the EOD %d, Max profit $: %d", result[0], result[1],
+				result[2]));
 	}
 
 	private static int[] findMaxSubArr(int[] a, int low, int high) {
@@ -50,5 +54,24 @@ public final class MaxSubArr {
 		}
 
 		return new int[] { maxLeft, maxRight, leftSum + rightSum };
+	}
+
+	private static int[] findMaxSubArrBF(int[] a) {
+		int maxProfit = Integer.MIN_VALUE;
+		int maxI = 0;
+		int maxJ = 0;
+		final int n = a.length;
+
+		for (int l = 1; l <= n; l++) {
+			for (int i = 0; i <= (n - l); i++) {
+				final int j = i + l - 1;
+				if ((a[j] - a[i]) >= maxProfit) {
+					maxProfit = a[j] - a[i];
+					maxI = i;
+					maxJ = j;
+				}
+			}
+		}
+		return new int[] { maxI, maxJ, maxProfit };
 	}
 }
