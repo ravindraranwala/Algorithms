@@ -5,15 +5,20 @@ import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.DELETE;
 import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.INSERT;
 import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.REPLACE;
 
-public final class EditDistance {
+public class EditDistance {
 	private static final String COMMA = ", ";
+	
+	private EditDistance() {
+		throw new AssertionError();
+	}
+	
 	public static void main(String[] args) {
 		// int minDist = editDistance("mart", "karma");
 		// sample data used to test (ABCDE, ABDE), (, a), (ISLANDER, SLANDER), (KITTEN,
 		// SITTING), (INTENTION, EXECUTION), (horse, ros) and
 		// (AGGCTATCACCTGACCTCCAGGCCGATGCCC, TAGCTATCACGACCGCGGTCGATTTGCCCGAC)
-		String x = "mart";
-		String y = "karma";
+		String x = "AGGCTATCACCTGACCTCCAGGCCGATGCCC";
+		String y = "TAGCTATCACGACCGCGGTCGATTTGCCCGAC";
 		int[][] c = editDistance(x, y);
 		int minDist = c[x.length()][y.length()];
 		System.out.println(String.format("Min Edit Distance: %d", minDist));
