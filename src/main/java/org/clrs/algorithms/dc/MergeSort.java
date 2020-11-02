@@ -13,12 +13,12 @@ public class MergeSort {
 		sort(ints);
 		System.out.println(Arrays.toString(ints));
 
-		Student bloch = new Student("Bloch", 3.81);
-		Student jenny = new Student("Jenny", 2.51);
-		Student meyers = new Student("Meyers", 3.76);
-		Student stroustrup = new Student("Stroustrup", 3.94);
-		Student forrest = new Student("Forrest", 2.74);
-		Student[] stds = new Student[] { bloch, jenny, meyers, stroustrup, forrest };
+		final Student bloch = new Student("Bloch", 3.81);
+		final Student jenny = new Student("Jenny", 2.51);
+		final Student meyers = new Student("Meyers", 3.76);
+		final Student stroustrup = new Student("Stroustrup", 3.94);
+		final Student forrest = new Student("Forrest", 2.74);
+		final Student[] stds = new Student[] { bloch, jenny, meyers, stroustrup, forrest };
 
 		sort(stds, Comparator.comparingDouble(Student::getGpa).reversed());
 		System.out.println(Arrays.toString(stds));

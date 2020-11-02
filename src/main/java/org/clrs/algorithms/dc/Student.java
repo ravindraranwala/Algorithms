@@ -5,7 +5,6 @@ class Student {
 	private final double gpa;
 
 	Student(String name, double gpa) {
-		super();
 		this.name = name;
 		this.gpa = gpa;
 	}
@@ -20,6 +19,6 @@ class Student {
 
 	@Override
 	public String toString() {
-		return String.format("{ name= %s , gpa=%.2f }", name, gpa);
+		return String.format("{ name = %s , gpa = %.2f }", name, gpa);
 	}
 }
