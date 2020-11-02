@@ -1,6 +1,6 @@
 package org.clrs.algorithms.dc;
 
-public class Student {
+class Student {
 	private final String name;
 	private final double gpa;
 
