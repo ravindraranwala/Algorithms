@@ -65,8 +65,9 @@ public final class MaxSubArr {
 		for (int l = 2; l <= n; l++) {
 			for (int i = 0; i <= (n - l); i++) {
 				final int j = i + l - 1;
-				if ((a[j] - a[i]) >= maxProfit) {
-					maxProfit = a[j] - a[i];
+				final int currProfit = a[j] - a[i];
+				if (currProfit > maxProfit) {
+					maxProfit = currProfit;
 					maxI = i;
 					maxJ = j;
 				}
