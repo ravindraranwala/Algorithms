@@ -62,7 +62,7 @@ public final class MaxSubArr {
 		int maxJ = 0;
 		final int n = a.length;
 
-		for (int l = 1; l <= n; l++) {
+		for (int l = 2; l <= n; l++) {
 			for (int i = 0; i <= (n - l); i++) {
 				final int j = i + l - 1;
 				if ((a[j] - a[i]) >= maxProfit) {
