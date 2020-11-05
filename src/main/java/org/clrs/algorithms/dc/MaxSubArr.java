@@ -1,19 +1,22 @@
 package org.clrs.algorithms.dc;
 
-public final class MaxSubArr {
+public class MaxSubArr {
+
+	private MaxSubArr() {
+		throw new AssertionError();
+	}
 
 	public static void main(String[] args) {
-		final int[] change = new int[] { 0, 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
+		final int[] change = new int[] { 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
 		int[] result = findMaxSubArr(change, 0, change.length - 1);
 		System.out.println(String.format("Low index: %d, High index: %d, Max profit per share $: %d", result[0],
 				result[1], result[2]));
-		final int[] price = new int[] { 100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97 };
-		result = findMaxSubArrBF(price);
-		System.out.println(String.format("Buy at the EOD: %d, Sell at the EOD %d, Max profit $: %d", result[0], result[1],
-				result[2]));
+		result = findMaxSubArrBF(change);
+		System.out.println(String.format("Buy at the EOD: %d, Sell at the EOD %d, Max profit $: %d", result[0],
+				result[1], result[2]));
 	}
 
-	private static int[] findMaxSubArr(int[] a, int low, int high) {
+	public static int[] findMaxSubArr(int[] a, int low, int high) {
 		if (low == high)
 			return new int[] { low, high, a[low] }; // base case, only one element
 		else {
@@ -35,7 +38,7 @@ public final class MaxSubArr {
 		int maxLeft = -1;
 		int sum = 0;
 		for (int i = mid; i >= low; i--) {
-			sum = sum + a[i];
+			sum += a[i];
 			if (sum > leftSum) {
 				leftSum = sum;
 				maxLeft = i;
@@ -62,12 +65,11 @@ public final class MaxSubArr {
 		int maxJ = 0;
 		final int n = a.length;
 
-		for (int l = 2; l <= n; l++) {
-			for (int i = 0; i <= (n - l); i++) {
-				final int j = i + l - 1;
-				final int currProfit = a[j] - a[i];
-				if (currProfit > maxProfit) {
-					maxProfit = currProfit;
+		for (int i = 0; i < n; i++) {
+			for (int j = i, sum = 0; j < n; j++) {
+				sum += a[j];
+				if(sum > maxProfit) {
+					maxProfit = sum;
 					maxI = i;
 					maxJ = j;
 				}
