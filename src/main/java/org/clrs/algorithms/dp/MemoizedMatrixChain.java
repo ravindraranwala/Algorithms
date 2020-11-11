@@ -4,7 +4,7 @@ package org.clrs.algorithms.dp;
 public class MemoizedMatrixChain {
 
 	public static void main(String[] args) {
-		final int[] p = new int[] { 30, 35, 15, 5, 10, 20, 25 };
+		final int[] p = { 30, 35, 15, 5, 10, 20, 25 };
 		int minCost = memoizedMatrixChain(p);
 		System.out.println(String.format("Min number of scalar multiplications: %d", minCost));
 	}

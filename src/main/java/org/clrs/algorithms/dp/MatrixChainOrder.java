@@ -3,7 +3,7 @@ package org.clrs.algorithms.dp;
 public final class MatrixChainOrder {
 
 	public static void main(String[] args) {
-		final int[] p = new int[] { 30, 35, 15, 5, 10, 20, 25 };
+		final int[] p = { 30, 35, 15, 5, 10, 20, 25 };
 		final Tables mAndS = matrixChainOrder(p);
 		final int n = p.length - 1;
 		System.out.println(String.format("Min number of scalar multiplications: %d", mAndS.m[1][n]));

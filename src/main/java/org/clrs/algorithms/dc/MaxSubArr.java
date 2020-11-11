@@ -7,7 +7,7 @@ public class MaxSubArr {
 	}
 
 	public static void main(String[] args) {
-		final int[] change = new int[] { 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
+		final int[] change = { 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 };
 		int[] result = findMaxSubArr(change, 0, change.length - 1);
 		System.out.println(String.format("Low index: %d, High index: %d, Max profit per share $: %d", result[0],
 				result[1], result[2]));

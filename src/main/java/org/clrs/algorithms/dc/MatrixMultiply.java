@@ -9,18 +9,18 @@ public class MatrixMultiply {
 	}
 
 	public static void main(String[] args) {
-		final int[][] a = new int[][] { { 1, 2, 3 }, { 4, 5, 6 } };
-		final int[][] b = new int[][] { { 7, 8 }, { 9, 10 }, { 11, 12 } };
+		final int[][] a = { { 1, 2, 3 }, { 4, 5, 6 } };
+		final int[][] b = { { 7, 8 }, { 9, 10 }, { 11, 12 } };
 		int[][] c = matrixMultiply(a, b);
 		System.out.println(Arrays.deepToString(c));
 
-		final int[][] m1 = new int[][] { { 3, 4, 2 } };
-		final int[][] m2 = new int[][] { { 13, 9, 7, 15 }, { 8, 7, 4, 6 }, { 6, 4, 0, 3 } };
+		final int[][] m1 = { { 3, 4, 2 } };
+		final int[][] m2 = { { 13, 9, 7, 15 }, { 8, 7, 4, 6 }, { 6, 4, 0, 3 } };
 		int[][] m3 = matrixMultiply(m1, m2);
 		System.out.println(Arrays.deepToString(m3));
 
-		final int[][] r = new int[][] { { 4 }, { 5 }, { 6 } };
-		final int[][] s = new int[][] { { 1, 2, 3 } };
+		final int[][] r = { { 4 }, { 5 }, { 6 } };
+		final int[][] s = { { 1, 2, 3 } };
 		int[][] t = matrixMultiply(r, s);
 		System.out.println(Arrays.deepToString(t));
 	}

@@ -9,7 +9,7 @@ public class MergeSort {
 	}
 
 	public static void main(String[] args) {
-		final Integer[] ints = new Integer[] { 2, 4, 5, 7, 1, 2, 3, 6 };
+		final Integer[] ints = { 2, 4, 5, 7, 1, 2, 3, 6 };
 		sort(ints);
 		System.out.println(Arrays.toString(ints));
 
@@ -18,7 +18,7 @@ public class MergeSort {
 		final Student meyers = new Student("Meyers", 3.76);
 		final Student stroustrup = new Student("Stroustrup", 3.94);
 		final Student forrest = new Student("Forrest", 2.74);
-		final Student[] stds = new Student[] { bloch, jenny, meyers, stroustrup, forrest };
+		final Student[] stds = { bloch, jenny, meyers, stroustrup, forrest };
 
 		sort(stds, Comparator.comparingDouble(Student::getGpa).reversed());
 		System.out.println(Arrays.toString(stds));
