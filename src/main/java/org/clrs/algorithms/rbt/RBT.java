@@ -5,9 +5,9 @@ import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.RED;
 
 import org.clrs.algorithms.rbt.RBT.TreeNode.Color;
 
-public final class RBT<T extends Comparable<? super T>> {
-	private final TreeNode<T> nil;
-	private TreeNode<T> root;
+public final class RBT<E extends Comparable<? super E>> {
+	private final TreeNode<E> nil;
+	private TreeNode<E> root;
 
 	public RBT() {
 		nil = new TreeNode<>(null);
@@ -35,13 +35,13 @@ public final class RBT<T extends Comparable<? super T>> {
 		rbt.delete(41);
 	}
 
-	public void insert(T key) {
+	public void insert(E key) {
 		rbInsert(new TreeNode<>(key));
 	}
 
-	private void rbInsert(TreeNode<T> z) {
-		TreeNode<T> y = nil;
-		TreeNode<T> x = root;
+	private void rbInsert(TreeNode<E> z) {
+		TreeNode<E> y = nil;
+		TreeNode<E> x = root;
 		while (x != nil) {
 			y = x;
 			if (z.key.compareTo(x.key) < 0)
@@ -63,10 +63,10 @@ public final class RBT<T extends Comparable<? super T>> {
 		rbInsertFixup(z);
 	}
 
-	private void rbInsertFixup(TreeNode<T> z) {
+	private void rbInsertFixup(TreeNode<E> z) {
 		while (z.p.color == RED) {
 			if (z.p == z.p.p.left) {
-				final TreeNode<T> y = z.p.p.right;
+				final TreeNode<E> y = z.p.p.right;
 				if (y.color == RED) {
 					// case 1
 					z.p.color = BLACK;
@@ -86,7 +86,7 @@ public final class RBT<T extends Comparable<? super T>> {
 				}
 			} else {
 				// Note this is symmetric to the previous one.
-				final TreeNode<T> y = z.p.p.left;
+				final TreeNode<E> y = z.p.p.left;
 				if (y.color == RED) {
 					// case 1
 					z.p.color = BLACK;
@@ -109,8 +109,8 @@ public final class RBT<T extends Comparable<? super T>> {
 		root.color = BLACK;
 	}
 
-	private void leftRotate(TreeNode<T> x) {
-		final TreeNode<T> y = x.right; // set y
+	private void leftRotate(TreeNode<E> x) {
+		final TreeNode<E> y = x.right; // set y
 		// turn y's left subtree into x's right subtree
 		x.right = y.left;
 		if (y.left != nil)
@@ -126,8 +126,8 @@ public final class RBT<T extends Comparable<? super T>> {
 		x.p = y;
 	}
 
-	private void rightRotate(TreeNode<T> y) {
-		final TreeNode<T> x = y.left;
+	private void rightRotate(TreeNode<E> y) {
+		final TreeNode<E> x = y.left;
 		y.left = x.right;
 		if (x.right != nil)
 			x.right.p = y;
@@ -142,7 +142,7 @@ public final class RBT<T extends Comparable<? super T>> {
 		y.p = x;
 	}
 
-	private void rbTransplant(final TreeNode<T> u, final TreeNode<T> v) {
+	private void rbTransplant(final TreeNode<E> u, final TreeNode<E> v) {
 		if (u.p == nil)
 			root = v;
 		else if (u == u.p.left)
@@ -152,15 +152,15 @@ public final class RBT<T extends Comparable<? super T>> {
 		v.p = u.p;
 	}
 
-	public void delete(T key) {
-		final TreeNode<T> nodeToDelete = iterativeTreeSearch(key);
+	public void delete(E key) {
+		final TreeNode<E> nodeToDelete = iterativeTreeSearch(key);
 		if (nodeToDelete == nil)
 			throw new IllegalArgumentException("Invalid key: " + key);
 		rbDelete(nodeToDelete);
 	}
 
-	private TreeNode<T> iterativeTreeSearch(T k) {
-		TreeNode<T> x = root;
+	private TreeNode<E> iterativeTreeSearch(E k) {
+		TreeNode<E> x = root;
 		while (x != nil && !x.key.equals(k)) {
 			if (k.compareTo(x.key) < 0)
 				x = x.left;
@@ -170,10 +170,10 @@ public final class RBT<T extends Comparable<? super T>> {
 		return x;
 	}
 
-	private void rbDelete(final TreeNode<T> z) {
-		TreeNode<T> y = z;
+	private void rbDelete(final TreeNode<E> z) {
+		TreeNode<E> y = z;
 		Color yOriginalColor = y.color;
-		TreeNode<T> x;
+		TreeNode<E> x;
 		if (z.left == nil) {
 			x = z.right;
 			rbTransplant(z, z.right);
@@ -201,10 +201,10 @@ public final class RBT<T extends Comparable<? super T>> {
 	}
 
 	// Restores red-black properties.
-	private void rbDeleteFixup(TreeNode<T> x) {
+	private void rbDeleteFixup(TreeNode<E> x) {
 		while (x != root && x.color == BLACK) {
 			if (x == x.p.left) {
-				TreeNode<T> w = x.p.right;
+				TreeNode<E> w = x.p.right;
 				if (w.color == RED) {
 					// case 1
 					w.color = BLACK;
@@ -233,7 +233,7 @@ public final class RBT<T extends Comparable<? super T>> {
 				}
 			} else {
 				// symmetric to the then clause.
-				TreeNode<T> w = x.p.left;
+				TreeNode<E> w = x.p.left;
 				if (w.color == RED) {
 					// case 1
 					w.color = BLACK;
@@ -262,7 +262,7 @@ public final class RBT<T extends Comparable<? super T>> {
 		x.color = BLACK;
 	}
 
-	private TreeNode<T> treeMinimum(TreeNode<T> x) {
+	private TreeNode<E> treeMinimum(TreeNode<E> x) {
 		while (x.left != nil)
 			x = x.left;
 		return x;
@@ -277,14 +277,14 @@ public final class RBT<T extends Comparable<? super T>> {
 		}
 	}
 
-	private void printSubtree(TreeNode<T> node) {
-		final TreeNode<T> left = node.left;
+	private void printSubtree(TreeNode<E> node) {
+		final TreeNode<E> left = node.left;
 		if (left != nil) {
 			System.out
 					.println(String.format("%d is the left child of %d with color %s", left.key, node.key, left.color));
 			printSubtree(left);
 		}
-		final TreeNode<T> right = node.right;
+		final TreeNode<E> right = node.right;
 		if (right != nil) {
 			System.out.println(
 					String.format("%d is the right child of %d with color %s", right.key, node.key, right.color));
@@ -293,14 +293,14 @@ public final class RBT<T extends Comparable<? super T>> {
 
 	}
 
-	static class TreeNode<S extends Comparable<? super S>> {
-		private final S key;
-		private TreeNode<S> left;
-		private TreeNode<S> right;
-		private TreeNode<S> p;
+	static class TreeNode<T extends Comparable<? super T>> {
+		private final T key;
+		private TreeNode<T> left;
+		private TreeNode<T> right;
+		private TreeNode<T> p;
 		private Color color;
 
-		TreeNode(S key) {
+		TreeNode(T key) {
 			super();
 			this.key = key;
 		}

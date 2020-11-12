@@ -3,8 +3,8 @@ package org.clrs.algorithms.bst;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
-	private TreeNode<T> root = null;
+public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
+	private TreeNode<E> root = null;
 
 	public static void main(String[] args) {
 		final BST<Integer> bst = new BST<>();
@@ -33,20 +33,20 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		bst.print();
 	}
 
-	public void delete(T key) {
-		final TreeNode<T> nodeToDelete = iterativeTreeSearch(key);
+	public void delete(E key) {
+		final TreeNode<E> nodeToDelete = iterativeTreeSearch(key);
 		if (nodeToDelete == null)
 			throw new IllegalArgumentException("Invalid key: " + key);
 		treeDelete(nodeToDelete);
 	}
 
-	private void treeDelete(TreeNode<T> z) {
+	private void treeDelete(TreeNode<E> z) {
 		if (z.left == null)
 			transplant(z, z.right);
 		else if (z.right == null)
 			transplant(z, z.left);
 		else {
-			TreeNode<T> y = treeMinimum(z.right);
+			TreeNode<E> y = treeMinimum(z.right);
 			if (y.p != z) {
 				transplant(y, y.right);
 				y.right = z.right;
@@ -58,7 +58,7 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		}
 	}
 
-	private void transplant(TreeNode<T> u, TreeNode<T> v) {
+	private void transplant(TreeNode<E> u, TreeNode<E> v) {
 		if (u.p == null)
 			root = v;
 		else if (u.p.left == u)
@@ -70,13 +70,13 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 			v.p = u.p;
 	}
 
-	public void insert(T key) {
+	public void insert(E key) {
 		treeInsert(new TreeNode<>(key));
 	}
 
-	private void treeInsert(TreeNode<T> z) {
-		TreeNode<T> y = null;
-		TreeNode<T> x = this.root;
+	private void treeInsert(TreeNode<E> z) {
+		TreeNode<E> y = null;
+		TreeNode<E> x = this.root;
 
 		while (x != null) {
 			y = x;
@@ -95,18 +95,18 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 			y.right = z;
 	}
 
-	public T successor(T key) {
-		final TreeNode<T> currNode = iterativeTreeSearch(key);
+	public E successor(E key) {
+		final TreeNode<E> currNode = iterativeTreeSearch(key);
 		if (currNode == null)
 			throw new IllegalArgumentException("Invalid key: " + key);
 		return treeSuccessor(currNode).key;
 	}
 
-	private TreeNode<T> treeSuccessor(TreeNode<T> x) {
+	private TreeNode<E> treeSuccessor(TreeNode<E> x) {
 		if (x.right != null)
 			return treeMinimum(x.right);
 
-		TreeNode<T> y = x.p;
+		TreeNode<E> y = x.p;
 		while (y != null && y.right == x) {
 			x = y;
 			y = y.p;
@@ -114,29 +114,29 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		return y;
 	}
 
-	public T min() {
+	public E min() {
 		return treeMinimum(root).key;
 	}
 
-	private TreeNode<T> treeMinimum(TreeNode<T> x) {
+	private TreeNode<E> treeMinimum(TreeNode<E> x) {
 		while (x.left != null)
 			x = x.left;
 		return x;
 	}
 
-	public T max() {
+	public E max() {
 		return treeMaximum(root).key;
 	}
 
 	// Need to find the predecessor of a given node.
-	private TreeNode<T> treeMaximum(TreeNode<T> x) {
+	private TreeNode<E> treeMaximum(TreeNode<E> x) {
 		while (x.right != null)
 			x = x.right;
 		return x;
 	}
 
-	private TreeNode<T> iterativeTreeSearch(T k) {
-		TreeNode<T> x = root;
+	private TreeNode<E> iterativeTreeSearch(E k) {
+		TreeNode<E> x = root;
 		while (x != null && !x.key.equals(k)) {
 			if (k.compareTo(x.key) < 0)
 				x = x.left;
@@ -146,11 +146,11 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		return x;
 	}
 
-	public TreeNode<T> search(T k) {
+	public TreeNode<E> search(E k) {
 		return treeSearch(root, k);
 	}
 
-	private TreeNode<T> treeSearch(TreeNode<T> x, T k) {
+	private TreeNode<E> treeSearch(TreeNode<E> x, E k) {
 		if (x == null || k.equals(x.key))
 			return x;
 		if (k.compareTo(x.key) < 0)
@@ -163,7 +163,7 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		inorderTreeWalk(root);
 	}
 
-	private void inorderTreeWalk(TreeNode<T> x) {
+	private void inorderTreeWalk(TreeNode<E> x) {
 		if (x != null) {
 			inorderTreeWalk(x.left);
 			System.out.print(x.key);
@@ -171,20 +171,20 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		}
 	}
 
-	static class TreeNode<S extends Comparable<? super S>> {
-		S key;
-		TreeNode<S> left;
-		TreeNode<S> right;
-		TreeNode<S> p;
+	static class TreeNode<T extends Comparable<? super T>> {
+		T key;
+		TreeNode<T> left;
+		TreeNode<T> right;
+		TreeNode<T> p;
 
-		TreeNode(S x) {
+		TreeNode(T x) {
 			key = x;
 		}
 	}
 
-	class BSTIterator implements Iterator<T> {
-		private TreeNode<T> current;
-		private TreeNode<T> next;
+	class BSTIterator implements Iterator<E> {
+		private TreeNode<E> current;
+		private TreeNode<E> next;
 
 		BSTIterator() {
 			current = null;
@@ -197,7 +197,7 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 		}
 
 		@Override
-		public T next() {
+		public E next() {
 			if (next == null)
 				throw new NoSuchElementException();
 			current = next;
@@ -216,7 +216,7 @@ public final class BST<T extends Comparable<? super T>> implements Iterable<T> {
 	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public Iterator<E> iterator() {
 		return new BSTIterator();
 	}
 }
