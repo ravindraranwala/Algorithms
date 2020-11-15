@@ -11,18 +11,18 @@ public class Strassens {
 	public static void main(String[] args) {
 		int[][] a = { { 1, 3 }, { 7, 5 } };
 		int[][] b = { { 6, 8 }, { 4, 2 } };
-		int[][] c = matrixMultiply(a, b);
+		int[][] c = squareMatrixMultiply(a, b);
 		System.out.println(Arrays.deepToString(c));
 	}
 	
-	public static int[][] matrixMultiply(int[][] a, int[][] b) {
+	public static int[][] squareMatrixMultiply(int[][] a, int[][] b) {
+		// TODO: parameter validation should be done.
 		return squareMatrixMultiply(a, 0, 0, b, 0, 0, a.length);
 	}
 
 	private static int[][] squareMatrixMultiply(int[][] a, int startRowA, int startColA, int[][] b, int startRowB,
 			int startColB, int n) {
-		final double exp = base2Exponent(n);
-		if (exp % 1 != 0)
+		if (!exactPowerOf2(n))
 			throw new IllegalArgumentException(String.format("n = %d should be an exact power of 2", n));
 		// Base case of the recursion.
 		if (n == 1)
@@ -58,7 +58,7 @@ public class Strassens {
 				Integer::sum);
 		final int[][] c12 = matrixSum(p1, p2, Integer::sum);
 		final int[][] c21 = matrixSum(p3, p4, Integer::sum);
-		final int[][] c22 = matrixSum(matrixSum(p5, p3, (x, y) -> x - y), matrixSum(p5, p7, (x, y) -> x - y),
+		final int[][] c22 = matrixSum(matrixSum(p5, p3, (x, y) -> x - y), matrixSum(p1, p7, (x, y) -> x - y),
 				Integer::sum);
 
 		final int[][] c = new int[n][n];
@@ -69,6 +69,10 @@ public class Strassens {
 		return c;
 	}
 
+	private static boolean exactPowerOf2(int n) {
+		return base2Exponent(n) % 1 == 0;
+	}
+
 	private static double base2Exponent(int n) {
 		return Math.log(n) / Math.log(2);
 	}
@@ -77,8 +81,8 @@ public class Strassens {
 			int n, IntBinaryOperator binOp) {
 		final int[][] c = new int[n][n];
 		// raw major order.
-		for (int i = 0; i < a.length; i++)
-			for (int j = 0; j < a[0].length; j++)
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
 				c[i][j] = binOp.applyAsInt(a[startRowA + i][startColA + j], b[startRowB + i][startColB + j]);
 		return c;
 	}
