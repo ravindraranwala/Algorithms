@@ -22,7 +22,7 @@ public class Strassens {
 
 	private static int[][] squareMatrixMultiply(int[][] a, int startRowA, int startColA, int[][] b, int startRowB,
 			int startColB, int n) {
-		if (!exactPowerOf2(n))
+		if (!isExactPowerOf2(n))
 			throw new IllegalArgumentException(String.format("n = %d should be an exact power of 2", n));
 		// Base case of the recursion.
 		if (n == 1)
@@ -69,7 +69,7 @@ public class Strassens {
 		return c;
 	}
 
-	private static boolean exactPowerOf2(int n) {
+	private static boolean isExactPowerOf2(int n) {
 		return base2Exponent(n) % 1 == 0;
 	}
 
