@@ -13,10 +13,21 @@ public class Strassens {
 		int[][] b = { { 6, 8 }, { 4, 2 } };
 		int[][] c = squareMatrixMultiply(a, b);
 		System.out.println(Arrays.deepToString(c));
+
+		int[][] d = { { 3, 1, 1, 4 }, { 5, 3, 2, 1 } };
+		int[][] e = { { 4, 9 }, { 6, 8 }, { 9, 7 }, { 7, 6 } };
+		final int n = 2;
+		int[][] m1 = squareMatrixMultiply(d, 0, 0, e, 0, 0, n);
+		int[][] m2 = squareMatrixMultiply(d, 0, n, e, n, 0, n);
+		int[][] m3 = matrixSum(m1, m2, Integer::sum);
+		System.out.println(Arrays.deepToString(m3));
 	}
-	
+
 	public static int[][] squareMatrixMultiply(int[][] a, int[][] b) {
-		// TODO: parameter validation should be done.
+		if (a.length == 0 || a.length != a[0].length || a.length != b.length || a[0].length != b[0].length)
+			throw new IllegalArgumentException(
+					"Not conformable for multiplication, different dimensions or empty matrices provided.");
+
 		return squareMatrixMultiply(a, 0, 0, b, 0, 0, a.length);
 	}
 
