@@ -1,13 +1,17 @@
 package org.clrs.algorithms.dp;
 
-public final class LongestPalindromeSubseq {
+public class LongestPalindromeSubseq {
+    
+	private LongestPalindromeSubseq() {
+		throw new AssertionError("Non instantiable !");
+	}
 
 	public static void main(String[] args) {
 		final String longestPalindSubseq = longestPalindromeSubseq("character");
 		System.out.println(longestPalindSubseq);
 	}
 
-	private static String longestPalindromeSubseq(String s) {
+	public static String longestPalindromeSubseq(String s) {
 		final int n = s.length();
 		final int[][] start = new int[n][n];
 		final int[][] end = new int[n][n];
