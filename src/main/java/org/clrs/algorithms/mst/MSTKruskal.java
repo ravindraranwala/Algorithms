@@ -106,7 +106,7 @@ public class MSTKruskal {
 		private Node p;
 	}
 
-	static class Edge {
+	public static class Edge {
 		private final int source;
 		private final int target;
 		private final int weight;
