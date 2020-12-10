@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class BST<E> implements Iterable<E> {
+public class BST<E> implements Iterable<E> {
 	private TreeNode<E> root = null;
 	private final Comparator<? super E> comparator;
 
