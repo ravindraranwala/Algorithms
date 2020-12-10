@@ -1,13 +1,27 @@
 package org.clrs.algorithms.bst;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
+public final class BST<E> implements Iterable<E> {
 	private TreeNode<E> root = null;
+	private final Comparator<? super E> comparator;
+
+	private BST(Comparator<? super E> comparator) {
+		this.comparator = comparator;
+	}
+
+	public static <T> BST<T> of(Comparator<? super T> comparator) {
+		return new BST<>(comparator);
+	}
+
+	public static <T extends Comparable<? super T>> BST<T> of() {
+		return new BST<>(Comparator.naturalOrder());
+	}
 
 	public static void main(String[] args) {
-		final BST<Integer> bst = new BST<>();
+		final BST<Integer> bst = BST.of();
 		bst.insert(4);
 		bst.insert(2);
 		bst.insert(7);
@@ -80,7 +94,7 @@ public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
 
 		while (x != null) {
 			y = x;
-			if (z.key.compareTo(x.key) < 0)
+			if (comparator.compare(z.key, x.key) < 0)
 				x = x.left;
 			else
 				x = x.right;
@@ -89,7 +103,7 @@ public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
 		z.p = y;
 		if (y == null)
 			this.root = z; // tree T was empty
-		else if (z.key.compareTo(y.key) < 0)
+		else if (comparator.compare(z.key, y.key) < 0)
 			y.left = z;
 		else
 			y.right = z;
@@ -138,7 +152,7 @@ public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
 	private TreeNode<E> iterativeTreeSearch(E k) {
 		TreeNode<E> x = root;
 		while (x != null && !x.key.equals(k)) {
-			if (k.compareTo(x.key) < 0)
+			if (comparator.compare(k, x.key) < 0)
 				x = x.left;
 			else
 				x = x.right;
@@ -153,7 +167,7 @@ public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
 	private TreeNode<E> treeSearch(TreeNode<E> x, E k) {
 		if (x == null || k.equals(x.key))
 			return x;
-		if (k.compareTo(x.key) < 0)
+		if (comparator.compare(k, x.key) < 0)
 			return treeSearch(x.left, k);
 		else
 			return treeSearch(x.right, k);
@@ -171,7 +185,7 @@ public final class BST<E extends Comparable<? super E>> implements Iterable<E> {
 		}
 	}
 
-	static class TreeNode<T extends Comparable<? super T>> {
+	static class TreeNode<T> {
 		T key;
 		TreeNode<T> left;
 		TreeNode<T> right;
