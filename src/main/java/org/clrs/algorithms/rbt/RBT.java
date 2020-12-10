@@ -313,7 +313,6 @@ public class RBT<E> {
 		private Color color;
 
 		TreeNode(T key) {
-			super();
 			this.key = key;
 		}
 
