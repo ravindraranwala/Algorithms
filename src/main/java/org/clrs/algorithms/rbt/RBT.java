@@ -3,21 +3,33 @@ package org.clrs.algorithms.rbt;
 import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.BLACK;
 import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.RED;
 
+import java.util.Comparator;
+
 import org.clrs.algorithms.rbt.RBT.TreeNode.Color;
 
-public final class RBT<E extends Comparable<? super E>> {
+public class RBT<E> {
 	private final TreeNode<E> nil;
+	private final Comparator<? super E> comparator;
 	private TreeNode<E> root;
 
-	public RBT() {
+	private RBT(Comparator<? super E> comparator) {
 		nil = new TreeNode<>(null);
 		nil.color = BLACK;
 		root = nil;
+		this.comparator = comparator;
+	}
+
+	public static <T> RBT<T> of(Comparator<? super T> comparator) {
+		return new RBT<>(comparator);
+	}
+
+	public static <T extends Comparable<? super T>> RBT<T> of() {
+		return new RBT<>(Comparator.naturalOrder());
 	}
 
 	public static void main(String[] args) {
 		// Sample driver code obtained from the CLRS text book chapter exercises.
-		final RBT<Integer> rbt = new RBT<>();
+		final RBT<Integer> rbt = RBT.of();
 		rbt.insert(41);
 		rbt.insert(38);
 		rbt.insert(31);
@@ -25,7 +37,7 @@ public final class RBT<E extends Comparable<? super E>> {
 		rbt.insert(19);
 		rbt.insert(8);
 		rbt.print();
-		
+
 		rbt.delete(8);
 		rbt.delete(12);
 		rbt.print();
@@ -44,7 +56,7 @@ public final class RBT<E extends Comparable<? super E>> {
 		TreeNode<E> x = root;
 		while (x != nil) {
 			y = x;
-			if (z.key.compareTo(x.key) < 0)
+			if (comparator.compare(z.key, x.key) < 0)
 				x = x.left;
 			else
 				x = x.right;
@@ -52,7 +64,7 @@ public final class RBT<E extends Comparable<? super E>> {
 		z.p = y;
 		if (y == nil)
 			root = z;
-		else if (z.key.compareTo(y.key) < 0)
+		else if (comparator.compare(z.key, y.key) < 0)
 			y.left = z;
 		else
 			y.right = z;
@@ -162,7 +174,7 @@ public final class RBT<E extends Comparable<? super E>> {
 	private TreeNode<E> iterativeTreeSearch(E k) {
 		TreeNode<E> x = root;
 		while (x != nil && !x.key.equals(k)) {
-			if (k.compareTo(x.key) < 0)
+			if (comparator.compare(k, x.key) < 0)
 				x = x.left;
 			else
 				x = x.right;
@@ -293,7 +305,7 @@ public final class RBT<E extends Comparable<? super E>> {
 
 	}
 
-	static class TreeNode<T extends Comparable<? super T>> {
+	static class TreeNode<T> {
 		private final T key;
 		private TreeNode<T> left;
 		private TreeNode<T> right;
