@@ -1,22 +1,21 @@
-package org.clrs.algorithms.rbt;
+package org.clrs.algorithms.trees;
 
-import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.BLACK;
-import static org.clrs.algorithms.rbt.RBT.TreeNode.Color.RED;
+import static org.clrs.algorithms.trees.RBT.RBTreeNode.Color.BLACK;
+import static org.clrs.algorithms.trees.RBT.RBTreeNode.Color.RED;
 
 import java.util.Comparator;
 
-import org.clrs.algorithms.rbt.RBT.TreeNode.Color;
+import org.clrs.algorithms.trees.AbstractBST.TreeNode;
+import org.clrs.algorithms.trees.RBT.RBTreeNode;
+import org.clrs.algorithms.trees.RBT.RBTreeNode.Color;
 
-public class RBT<E> {
-	private final TreeNode<E> nil;
-	private final Comparator<? super E> comparator;
-	private TreeNode<E> root;
+public class RBT<E> extends AbstractBST<E, RBTreeNode<E>> {
+	private final RBTreeNode<E> nil;
 
 	private RBT(Comparator<? super E> comparator) {
-		nil = new TreeNode<>(null);
-		nil.color = BLACK;
+		super(comparator, new RBTreeNode<>(null, BLACK));
+		nil = sentinel;
 		root = nil;
-		this.comparator = comparator;
 	}
 
 	public static <T> RBT<T> of(Comparator<? super T> comparator) {
@@ -47,13 +46,14 @@ public class RBT<E> {
 		rbt.delete(41);
 	}
 
+	@Override
 	public void insert(E key) {
-		rbInsert(new TreeNode<>(key));
+		rbInsert(new RBTreeNode<>(key));
 	}
 
-	private void rbInsert(TreeNode<E> z) {
-		TreeNode<E> y = nil;
-		TreeNode<E> x = root;
+	private void rbInsert(RBTreeNode<E> z) {
+		RBTreeNode<E> y = nil;
+		RBTreeNode<E> x = root;
 		while (x != nil) {
 			y = x;
 			if (comparator.compare(z.key, x.key) < 0)
@@ -75,10 +75,10 @@ public class RBT<E> {
 		rbInsertFixup(z);
 	}
 
-	private void rbInsertFixup(TreeNode<E> z) {
+	private void rbInsertFixup(RBTreeNode<E> z) {
 		while (z.p.color == RED) {
 			if (z.p == z.p.p.left) {
-				final TreeNode<E> y = z.p.p.right;
+				final RBTreeNode<E> y = z.p.p.right;
 				if (y.color == RED) {
 					// case 1
 					z.p.color = BLACK;
@@ -98,7 +98,7 @@ public class RBT<E> {
 				}
 			} else {
 				// Note this is symmetric to the previous one.
-				final TreeNode<E> y = z.p.p.left;
+				final RBTreeNode<E> y = z.p.p.left;
 				if (y.color == RED) {
 					// case 1
 					z.p.color = BLACK;
@@ -121,8 +121,8 @@ public class RBT<E> {
 		root.color = BLACK;
 	}
 
-	private void leftRotate(TreeNode<E> x) {
-		final TreeNode<E> y = x.right; // set y
+	private void leftRotate(RBTreeNode<E> x) {
+		final RBTreeNode<E> y = x.right; // set y
 		// turn y's left subtree into x's right subtree
 		x.right = y.left;
 		if (y.left != nil)
@@ -138,8 +138,8 @@ public class RBT<E> {
 		x.p = y;
 	}
 
-	private void rightRotate(TreeNode<E> y) {
-		final TreeNode<E> x = y.left;
+	private void rightRotate(RBTreeNode<E> y) {
+		final RBTreeNode<E> x = y.left;
 		y.left = x.right;
 		if (x.right != nil)
 			x.right.p = y;
@@ -154,7 +154,7 @@ public class RBT<E> {
 		y.p = x;
 	}
 
-	private void rbTransplant(final TreeNode<E> u, final TreeNode<E> v) {
+	private void rbTransplant(final RBTreeNode<E> u, final RBTreeNode<E> v) {
 		if (u.p == nil)
 			root = v;
 		else if (u == u.p.left)
@@ -164,28 +164,18 @@ public class RBT<E> {
 		v.p = u.p;
 	}
 
+	@Override
 	public void delete(E key) {
-		final TreeNode<E> nodeToDelete = iterativeTreeSearch(key);
+		final RBTreeNode<E> nodeToDelete = iterativeTreeSearch(key);
 		if (nodeToDelete == nil)
 			throw new IllegalArgumentException("Invalid key: " + key);
 		rbDelete(nodeToDelete);
 	}
 
-	private TreeNode<E> iterativeTreeSearch(E k) {
-		TreeNode<E> x = root;
-		while (x != nil && !x.key.equals(k)) {
-			if (comparator.compare(k, x.key) < 0)
-				x = x.left;
-			else
-				x = x.right;
-		}
-		return x;
-	}
-
-	private void rbDelete(final TreeNode<E> z) {
-		TreeNode<E> y = z;
+	private void rbDelete(final RBTreeNode<E> z) {
+		RBTreeNode<E> y = z;
 		Color yOriginalColor = y.color;
-		TreeNode<E> x;
+		RBTreeNode<E> x;
 		if (z.left == nil) {
 			x = z.right;
 			rbTransplant(z, z.right);
@@ -213,10 +203,10 @@ public class RBT<E> {
 	}
 
 	// Restores red-black properties.
-	private void rbDeleteFixup(TreeNode<E> x) {
+	private void rbDeleteFixup(RBTreeNode<E> x) {
 		while (x != root && x.color == BLACK) {
 			if (x == x.p.left) {
-				TreeNode<E> w = x.p.right;
+				RBTreeNode<E> w = x.p.right;
 				if (w.color == RED) {
 					// case 1
 					w.color = BLACK;
@@ -245,7 +235,7 @@ public class RBT<E> {
 				}
 			} else {
 				// symmetric to the then clause.
-				TreeNode<E> w = x.p.left;
+				RBTreeNode<E> w = x.p.left;
 				if (w.color == RED) {
 					// case 1
 					w.color = BLACK;
@@ -274,12 +264,7 @@ public class RBT<E> {
 		x.color = BLACK;
 	}
 
-	private TreeNode<E> treeMinimum(TreeNode<E> x) {
-		while (x.left != nil)
-			x = x.left;
-		return x;
-	}
-
+	@Override
 	public void print() {
 		if (root == nil)
 			System.out.println(String.format("%s is the %s color root", "NIL", root.color));
@@ -289,14 +274,14 @@ public class RBT<E> {
 		}
 	}
 
-	private void printSubtree(TreeNode<E> node) {
-		final TreeNode<E> left = node.left;
+	private void printSubtree(RBTreeNode<E> node) {
+		final RBTreeNode<E> left = node.left;
 		if (left != nil) {
 			System.out
 					.println(String.format("%d is the left child of %d with color %s", left.key, node.key, left.color));
 			printSubtree(left);
 		}
-		final TreeNode<E> right = node.right;
+		final RBTreeNode<E> right = node.right;
 		if (right != nil) {
 			System.out.println(
 					String.format("%d is the right child of %d with color %s", right.key, node.key, right.color));
@@ -305,15 +290,16 @@ public class RBT<E> {
 
 	}
 
-	static class TreeNode<T> {
-		private final T key;
-		private TreeNode<T> left;
-		private TreeNode<T> right;
-		private TreeNode<T> p;
-		private Color color;
+	static class RBTreeNode<T> extends TreeNode<T, RBTreeNode<T>> {
+		Color color;
 
-		TreeNode(T key) {
-			this.key = key;
+		RBTreeNode(T key) {
+			super(key);
+		}
+
+		RBTreeNode(T key, Color color) {
+			this(key);
+			this.color = color;
 		}
 
 		static enum Color {
