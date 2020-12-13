@@ -12,6 +12,9 @@ import java.util.Comparator;
  */
 public class MaxHeap<E> {
 	private final Comparator<? super E> comparator;
+	@SuppressWarnings("unchecked")
+	private E[] a = (E[]) new Object[10];
+	private int size = 0;
 
 	private MaxHeap(Comparator<? super E> comparator) {
 		this.comparator = comparator;
@@ -69,26 +72,28 @@ public class MaxHeap<E> {
 		return i * 2 + 1;
 	}
 
-	private void maxHeapify(E[] a, int i) {
+	private void maxHeapify(int i, int heapSize) {
+		if (heapSize > size)
+			throw new IllegalArgumentException("Heap size cannot be larger than array length.");
 		final int l = left(i);
 		final int r = right(i);
 		int largest = i;
-		if (l <= a.length && comparator.compare(a[l], a[i]) > 0)
+		if (l <= heapSize && comparator.compare(a[l], a[i]) > 0)
 			largest = l;
-		if (r <= a.length && comparator.compare(a[r], a[i]) > 0)
+		if (r <= heapSize && comparator.compare(a[r], a[i]) > 0)
 			largest = r;
 		if (largest != i) {
 			// exchange the elements and build the heap property.
 			final E tmp = a[i];
 			a[i] = a[largest];
 			a[largest] = tmp;
-			maxHeapify(a, largest);
+			maxHeapify(largest, heapSize);
 		}
 	}
 
 	private void iterativeMaxHeapify(E[] a, int i) {
 		int largest = i;
-		while (largest <= a.length / 2) {
+		while (largest <= size / 2) {
 			final int l = left(i);
 			final int r = right(i);
 			if (comparator.compare(a[l], a[i]) > 0)
@@ -104,6 +109,36 @@ public class MaxHeap<E> {
 			a[largest] = tmp;
 
 		}
+	}
+
+	private void buildMaxHeap(E[] a) {
+		for (int l = size, i = l / 2; i >= 0; i--)
+			maxHeapify(i, l);
+	}
+
+	private void heapSort() {
+		buildMaxHeap(a);
+		for (int i = size, heapSize = size; i >= 2; i--) {
+			final E tmp = a[0];
+			a[0] = a[i];
+			a[i] = tmp;
+			heapSize = heapSize - 1;
+			maxHeapify(0, heapSize);
+		}
+	}
+
+	public void ensureCapacity(int mincap) {
+		int oldcap = size;
+		if (mincap > oldcap) {
+			int newcap = Math.max(mincap, (oldcap * 3) / 2 + 1);
+			E[] oldarr = a;
+			a = (E[]) new Object[newcap]; // unchecked cast
+			System.arraycopy(oldarr, 0, a, 0, size);
+		}
+	}
+
+	public void add(int i, E elt) {
+		ensureCapacity(size + 1);
 	}
 
 	public static void main(String[] args) {
