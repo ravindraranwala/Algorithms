@@ -115,7 +115,7 @@ public class PriorityQueue<E> implements Queue<E> {
 	}
 
 	private void ensureCapacity(int mincap) {
-		int oldcap = a.length;;
+		final int oldcap = a.length;
 		if (mincap > oldcap) {
 			int newcap = Math.max(mincap, (oldcap * 3) / 2 + 1);
 			E[] oldarr = a;
