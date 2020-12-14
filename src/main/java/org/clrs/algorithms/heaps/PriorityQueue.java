@@ -15,11 +15,12 @@ import org.clrs.algorithms.dc.Student;
 public class PriorityQueue<E> implements Queue<E> {
 	private final Comparator<? super E> comparator;
 	@SuppressWarnings("unchecked")
-	private E[] a = (E[]) new Object[10];
+	private E[] a = (E[]) new Object[2];
 	private int size = 0;
 
 	private PriorityQueue(Comparator<? super E> comparator) {
 		this.comparator = comparator;
+		a[0] = null;   // dummy head
 	}
 
 	/**
@@ -76,15 +77,17 @@ public class PriorityQueue<E> implements Queue<E> {
 	}
 
 	private void iterativeMinHeapify(int i, int heapSize) {
+		if (heapSize > size)
+			throw new IllegalArgumentException("Heap size cannot be larger than array length.");
 		int smallest = i;
 		while (smallest <= size / 2) {
 			final int l = left(i);
 			final int r = right(i);
-			if (comparator.compare(a[l], a[i]) < 0)
+			if (l <= heapSize && comparator.compare(a[l], a[i]) < 0)
 				smallest = l;
-			if (comparator.compare(a[r], a[i]) < 0)
+			else if (r <= heapSize && comparator.compare(a[r], a[i]) < 0)
 				smallest = r;
-			if (smallest == i)
+			else
 				return;
 
 			// exchange the elements and build the heap property.
@@ -96,41 +99,42 @@ public class PriorityQueue<E> implements Queue<E> {
 	}
 
 	private void buildMinHeap() {
-		for (int i = size / 2; i >= 0; i--)
+		for (int i = size / 2; i > 0; i--)
 			minHeapify(i, size);
 	}
 
 	private void heapSort() {
 		buildMinHeap();
 		for (int i = size, heapSize = size; i >= 2; i--) {
-			final E tmp = a[0];
-			a[0] = a[i];
+			final E tmp = a[1];
+			a[1] = a[i];
 			a[i] = tmp;
 			heapSize = heapSize - 1;
-			minHeapify(0, heapSize);
+			minHeapify(1, heapSize);
 		}
 	}
 
 	private void ensureCapacity(int mincap) {
-		int oldcap = size;
+		int oldcap = a.length;;
 		if (mincap > oldcap) {
 			int newcap = Math.max(mincap, (oldcap * 3) / 2 + 1);
 			E[] oldarr = a;
 			a = (E[]) new Object[newcap]; // unchecked cast
-			System.arraycopy(oldarr, 0, a, 0, size);
+			a[0] = null;
+			System.arraycopy(oldarr, 1, a, 1, size);
 		}
 	}
 
 	@Override
 	public void insert(E elt) {
-		ensureCapacity(size + 1);
-		a[size] = elt;
-		updateKey(size);
+		ensureCapacity(size + 2);
+		a[size + 1] = elt;
+		updateKey(size + 1);
 		size++;
 	}
 
 	private void updateKey(int i) {
-		while (i > 0 && comparator.compare(a[parent(i)], a[i]) > 0) {
+		while (i > 1 && comparator.compare(a[parent(i)], a[i]) > 0) {
 			final E tmp = a[parent(i)];
 			a[parent(i)] = a[i];
 			a[i] = tmp;
@@ -139,21 +143,22 @@ public class PriorityQueue<E> implements Queue<E> {
 	}
 
 	@Override
-	public E examineHead() {
+	public E examine() {
 		if (this.size < 1)
 			throw new NoSuchElementException();
 		return a[0];
 	}
 
 	@Override
-	public E extractHead() {
+	public E extract() {
 		if (this.size < 1)
 			throw new NoSuchElementException();
-		final E max = a[0];
-		a[0] = a[size - 1];
+		final E head = a[1];
+		a[1] = a[size];
+		a[size] = null;
 		size--;
-		iterativeMinHeapify(0, size);
-		return max;
+		minHeapify(1, size);
+		return head;
 	}
 
 	@Override
@@ -169,7 +174,7 @@ public class PriorityQueue<E> implements Queue<E> {
 		intQueue.insert(5);
 
 		while (!intQueue.isEmpty())
-			System.out.println(intQueue.extractHead());
+			System.out.println(intQueue.extract());
 
 		final Student bloch = new Student("Bloch", 3.81);
 		final Student jenny = new Student("Jenny", 2.51);
@@ -186,7 +191,7 @@ public class PriorityQueue<E> implements Queue<E> {
 		stdQueue.insert(forrest);
 
 		while (!stdQueue.isEmpty())
-			System.out.println(stdQueue.extractHead());
+			System.out.println(stdQueue.extract());
 	}
 
 }
