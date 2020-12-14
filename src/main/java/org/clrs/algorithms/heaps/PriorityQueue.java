@@ -1,5 +1,6 @@
 package org.clrs.algorithms.heaps;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
@@ -20,7 +21,7 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	private PriorityQueue(Comparator<? super E> comparator) {
 		this.comparator = comparator;
-		a[0] = null;   // dummy head
+		a[0] = null; // dummy head
 	}
 
 	/**
@@ -94,7 +95,6 @@ public class PriorityQueue<E> implements Queue<E> {
 			final E tmp = a[i];
 			a[i] = a[smallest];
 			a[smallest] = tmp;
-
 		}
 	}
 
@@ -164,6 +164,11 @@ public class PriorityQueue<E> implements Queue<E> {
 	@Override
 	public boolean isEmpty() {
 		return size == 0;
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(Arrays.copyOfRange(a, 1, size + 1));
 	}
 
 	public static void main(String[] args) {
