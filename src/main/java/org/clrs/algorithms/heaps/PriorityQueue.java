@@ -167,7 +167,7 @@ public class PriorityQueue<E> implements Queue<E> {
 	}
 
 	public static void main(String[] args) {
-		final PriorityQueue<Integer> intQueue = PriorityQueue.of();
+		final Queue<Integer> intQueue = PriorityQueue.of();
 		intQueue.insert(4);
 		intQueue.insert(2);
 		intQueue.insert(7);
@@ -182,7 +182,7 @@ public class PriorityQueue<E> implements Queue<E> {
 		final Student stroustrup = new Student("Stroustrup", 3.94);
 		final Student forrest = new Student("Forrest", 2.74);
 
-		final PriorityQueue<Student> stdQueue = PriorityQueue
+		final Queue<Student> stdQueue = PriorityQueue
 				.of(Comparator.comparingDouble(Student::getGpa).reversed());
 		stdQueue.insert(meyers);
 		stdQueue.insert(stroustrup);
