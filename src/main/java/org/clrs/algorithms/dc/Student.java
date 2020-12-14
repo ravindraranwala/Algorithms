@@ -1,10 +1,10 @@
 package org.clrs.algorithms.dc;
 
-class Student {
+public class Student {
 	private final String name;
 	private final double gpa;
 
-	Student(String name, double gpa) {
+	public Student(String name, double gpa) {
 		this.name = name;
 		this.gpa = gpa;
 	}
