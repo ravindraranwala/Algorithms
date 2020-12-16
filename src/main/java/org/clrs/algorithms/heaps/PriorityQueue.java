@@ -7,7 +7,10 @@ import java.util.NoSuchElementException;
 import org.clrs.algorithms.dc.Student;
 
 /**
- * Defines a priority queue using a heap data structure.
+ * An unbounded priority {@link Queue} based on a priority heap. The elements of
+ * the priority queue are ordered according to their natural ordering, or by a
+ * Comparator provided at queue construction time, depending on which static
+ * factory method is used for construction.
  * 
  * @author ravindra
  *
@@ -187,8 +190,7 @@ public class PriorityQueue<E> implements Queue<E> {
 		final Student stroustrup = new Student("Stroustrup", 3.94);
 		final Student forrest = new Student("Forrest", 2.74);
 
-		final Queue<Student> stdQueue = PriorityQueue
-				.of(Comparator.comparingDouble(Student::getGpa).reversed());
+		final Queue<Student> stdQueue = PriorityQueue.of(Comparator.comparingDouble(Student::getGpa).reversed());
 		stdQueue.insert(meyers);
 		stdQueue.insert(stroustrup);
 		stdQueue.insert(jenny);
