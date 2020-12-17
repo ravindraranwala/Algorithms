@@ -132,11 +132,11 @@ public class PriorityQueue<E> implements Queue<E> {
 	public void insert(E elt) {
 		ensureCapacity(size + 2);
 		a[size + 1] = elt;
-		updateKey(size + 1);
+		decreaseKey(size + 1);
 		size++;
 	}
 
-	private void updateKey(int i) {
+	private void decreaseKey(int i) {
 		while (i > 1 && comparator.compare(a[parent(i)], a[i]) > 0) {
 			final E tmp = a[parent(i)];
 			a[parent(i)] = a[i];
@@ -147,14 +147,14 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	@Override
 	public E examine() {
-		if (this.size < 1)
+		if (this.size == 0)
 			throw new NoSuchElementException();
-		return a[0];
+		return a[1];
 	}
 
 	@Override
 	public E extract() {
-		if (this.size < 1)
+		if (this.size == 0)
 			throw new NoSuchElementException();
 		final E head = a[1];
 		a[1] = a[size];
