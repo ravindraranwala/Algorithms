@@ -28,12 +28,6 @@ public class PriorityQueue<E> implements Queue<E> {
 		a[0] = null; // dummy head
 	}
 
-	private PriorityQueue(Comparator<? super E> comparator, int initialCapacity) {
-		this.comparator = comparator;
-		a = (E[]) new Object[initialCapacity];
-		a[0] = null; // dummy head
-	}
-
 	/**
 	 * Constructs a priority queue with the default initial capacity and whose
 	 * elements are ordered according to the specified comparator.
@@ -59,33 +53,6 @@ public class PriorityQueue<E> implements Queue<E> {
 		return new PriorityQueue<>(Comparator.naturalOrder());
 	}
 
-	/**
-	 * Constructs a priority queue with the specified initial capacity and whose
-	 * elements are ordered according to the specified comparator.
-	 * 
-	 * @param <T>
-	 * @param comparator      comparator used for ordering the elements in the heap.
-	 * @param initialCapacity the initial capacity for this priority queue
-	 * @return priority queue data structure built using the given comparator and
-	 *         initial capacity.
-	 */
-	public static <T> PriorityQueue<T> of(Comparator<? super T> comparator, int initialCapacity) {
-		return new PriorityQueue<>(comparator, initialCapacity);
-	}
-
-	/**
-	 * Constructs a priority queue with the specified initial capacity that orders
-	 * its elements according to their natural ordering.
-	 * 
-	 * @param <T>
-	 * @param initialCapacity the initial capacity for this priority queue
-	 * @return priority queue data structure built using the natural order of it's
-	 *         elements and initial capacity.
-	 */
-	public static <T extends Comparable<? super T>> PriorityQueue<T> of(int initialCapacity) {
-		return new PriorityQueue<>(Comparator.naturalOrder(), initialCapacity);
-	}
-
 	private int parent(int i) {
 		return i / 2;
 	}
@@ -103,17 +70,17 @@ public class PriorityQueue<E> implements Queue<E> {
 			throw new IllegalArgumentException("Heap size cannot be larger than array length.");
 		final int l = left(i);
 		final int r = right(i);
-		int smalest = i;
+		int smallest = i;
 		if (l <= heapSize && comparator.compare(a[l], a[i]) < 0)
-			smalest = l;
-		if (r <= heapSize && comparator.compare(a[r], a[i]) < 0)
-			smalest = r;
-		if (smalest != i) {
+			smallest = l;
+		if (r <= heapSize && comparator.compare(a[r], a[smallest]) < 0)
+			smallest = r;
+		if (smallest != i) {
 			// exchange the elements and build the heap property.
 			final E tmp = a[i];
-			a[i] = a[smalest];
-			a[smalest] = tmp;
-			minHeapify(smalest, heapSize);
+			a[i] = a[smallest];
+			a[smallest] = tmp;
+			minHeapify(smallest, heapSize);
 		}
 	}
 
@@ -126,7 +93,7 @@ public class PriorityQueue<E> implements Queue<E> {
 			final int r = right(i);
 			if (l <= heapSize && comparator.compare(a[l], a[i]) < 0)
 				smallest = l;
-			else if (r <= heapSize && comparator.compare(a[r], a[i]) < 0)
+			else if (r <= heapSize && comparator.compare(a[r], a[smallest]) < 0)
 				smallest = r;
 			else
 				return;
