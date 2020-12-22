@@ -22,7 +22,7 @@ public class K_WayMerge {
 
 	public static <T> T[] kWayMerge(Comparator<? super T> cmp, T[]... sortedLists) {
 		final int k = sortedLists.length;
-		final Queue<ElementWrapper<T>> queue = PriorityQueue.of(new ElementWrapperComparator<T>(cmp));
+		final Queue<ElementWrapper<T>> queue = PriorityQueue.of(new ElementWrapperComparator<T>(cmp), k);
 		int n = 0;
 		int pos = 0;
 		final int[] nextIdx = new int[k];
