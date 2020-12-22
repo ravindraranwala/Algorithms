@@ -1,8 +1,9 @@
 package org.clrs.algorithms.heaps;
 
-import java.util.Arrays;
+import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.StringJoiner;
 
 import org.clrs.algorithms.dc.Student;
 
@@ -19,7 +20,7 @@ import org.clrs.algorithms.dc.Student;
 public class PriorityQueue<E> implements Queue<E> {
 	private final Comparator<? super E> comparator;
 	@SuppressWarnings("unchecked")
-	private E[] a = (E[]) new Object[2];
+	private E[] a = (E[]) new Object[10];
 	private int size = 0;
 
 	private PriorityQueue(Comparator<? super E> comparator) {
@@ -171,7 +172,27 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(Arrays.copyOfRange(a, 1, size + 1));
+		final StringJoiner sj = new StringJoiner(", ", "[", "]");
+		for (int i = 1; i <= size; i++)
+			sj.add(a[i].toString());
+
+		return sj.toString();
+	}
+
+	/**
+	 * This implementation returns an array containing all the elements of this
+	 * {@link PriorityQueue}. The runtime type of the returned array is that of the
+	 * specified type.
+	 * 
+	 * @param <T>
+	 * @param clazz The runtime type of the returned array
+	 * @return an array containing all the elements of this {@link PriorityQueue}
+	 */
+	public <T> T[] toArray(Class<T> clazz) {
+		@SuppressWarnings("unchecked")
+		final T[] arr = (T[]) Array.newInstance(clazz, size);
+		System.arraycopy(a, 1, arr, 0, size);
+		return arr;
 	}
 
 	public static void main(String[] args) {
