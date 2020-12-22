@@ -40,7 +40,8 @@ public class PriorityQueue<E> implements Queue<E> {
 	 * 
 	 * @param <T>
 	 * @param comparator comparator used for ordering the elements in the heap.
-	 * @return priority queue data structure built using the given comparator
+	 * @return priority queue data structure with the default initial capacity,
+	 *         built using the given comparator
 	 */
 	public static <T> PriorityQueue<T> of(Comparator<? super T> comparator) {
 		return new PriorityQueue<>(comparator);
@@ -51,8 +52,8 @@ public class PriorityQueue<E> implements Queue<E> {
 	 * elements according to their natural ordering.
 	 * 
 	 * @param <T>
-	 * @return priority queue data structure built using the natural order of it's
-	 *         elements.
+	 * @return priority queue data structure with the default initial capacity,
+	 *         built using the natural order of it's elements.
 	 */
 	public static <T extends Comparable<? super T>> PriorityQueue<T> of() {
 		return new PriorityQueue<>(Comparator.naturalOrder());
