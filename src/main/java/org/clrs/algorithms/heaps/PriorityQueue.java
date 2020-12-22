@@ -19,17 +19,24 @@ import org.clrs.algorithms.dc.Student;
  */
 public class PriorityQueue<E> implements Queue<E> {
 	private final Comparator<? super E> comparator;
-	@SuppressWarnings("unchecked")
-	private E[] a = (E[]) new Object[10];
+	private E[] a;
 	private int size = 0;
 
 	private PriorityQueue(Comparator<? super E> comparator) {
 		this.comparator = comparator;
+		a = (E[]) new Object[10];
+		a[0] = null; // dummy head
+	}
+
+	private PriorityQueue(Comparator<? super E> comparator, int initialCapacity) {
+		this.comparator = comparator;
+		a = (E[]) new Object[initialCapacity];
 		a[0] = null; // dummy head
 	}
 
 	/**
-	 * Constructs a priority queue using the given comparator.
+	 * Constructs a priority queue with the default initial capacity and whose
+	 * elements are ordered according to the specified comparator.
 	 * 
 	 * @param <T>
 	 * @param comparator comparator used for ordering the elements in the heap.
@@ -40,7 +47,8 @@ public class PriorityQueue<E> implements Queue<E> {
 	}
 
 	/**
-	 * Constructs a priority queue using the natural order of it's elements.
+	 * Constructs a priority queue with the default initial capacity that orders its
+	 * elements according to their natural ordering.
 	 * 
 	 * @param <T>
 	 * @return priority queue data structure built using the natural order of it's
@@ -48,6 +56,33 @@ public class PriorityQueue<E> implements Queue<E> {
 	 */
 	public static <T extends Comparable<? super T>> PriorityQueue<T> of() {
 		return new PriorityQueue<>(Comparator.naturalOrder());
+	}
+
+	/**
+	 * Constructs a priority queue with the specified initial capacity and whose
+	 * elements are ordered according to the specified comparator.
+	 * 
+	 * @param <T>
+	 * @param comparator      comparator used for ordering the elements in the heap.
+	 * @param initialCapacity the initial capacity for this priority queue
+	 * @return priority queue data structure built using the given comparator and
+	 *         initial capacity.
+	 */
+	public static <T> PriorityQueue<T> of(Comparator<? super T> comparator, int initialCapacity) {
+		return new PriorityQueue<>(comparator, initialCapacity);
+	}
+
+	/**
+	 * Constructs a priority queue with the specified initial capacity that orders
+	 * its elements according to their natural ordering.
+	 * 
+	 * @param <T>
+	 * @param initialCapacity the initial capacity for this priority queue
+	 * @return priority queue data structure built using the natural order of it's
+	 *         elements and initial capacity.
+	 */
+	public static <T extends Comparable<? super T>> PriorityQueue<T> of(int initialCapacity) {
+		return new PriorityQueue<>(Comparator.naturalOrder(), initialCapacity);
 	}
 
 	private int parent(int i) {
