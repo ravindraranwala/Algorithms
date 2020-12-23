@@ -126,15 +126,17 @@ public class PriorityQueue<E> implements Queue<E> {
 			final int r = right(i);
 			if (l <= heapSize && comparator.compare(a[l], a[i]) < 0)
 				smallest = l;
-			else if (r <= heapSize && comparator.compare(a[r], a[smallest]) < 0)
+			if (r <= heapSize && comparator.compare(a[r], a[smallest]) < 0)
 				smallest = r;
-			else
+			if(smallest == i)
 				return;
 
 			// exchange the elements and build the heap property.
 			final E tmp = a[i];
 			a[i] = a[smallest];
 			a[smallest] = tmp;
+			
+			i = smallest;
 		}
 	}
 
