@@ -24,7 +24,7 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	private PriorityQueue(Comparator<? super E> comparator) {
 		this.comparator = comparator;
-		a = (E[]) new Object[10];
+		a = (E[]) new Object[11];
 		a[0] = null; // dummy head
 	}
 
