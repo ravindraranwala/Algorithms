@@ -31,7 +31,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	public abstract void insert(E key);
 
 	/**
-	 * Prints the tress in a human readable format.
+	 * Prints the tree in a human readable format.
 	 */
 	public abstract void print();
 
@@ -102,7 +102,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	protected void inorderTreeWalk(N x) {
 		if (x != sentinel) {
 			inorderTreeWalk(x.left);
-			System.out.print(x.key);
+			System.out.print(x.key + " ");
 			inorderTreeWalk(x.right);
 		}
 	}
