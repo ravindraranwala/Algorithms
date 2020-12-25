@@ -1,8 +1,11 @@
 package org.clrs.algorithms.trees;
 
+import java.util.ArrayDeque;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.StringJoiner;
 
 import org.clrs.algorithms.trees.AbstractBST.TreeNode;
 
@@ -107,6 +110,30 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		}
 	}
 
+	/**
+	 * A nonrecursive algorithm that performs an inorder tree walk.
+	 * 
+	 * @param root The root node of the tree
+	 * @return String representation of the Binary search tree. Elements are in
+	 *         sorted order.
+	 */
+	protected String inorderTreeWalkIterative(N root) {
+		final Deque<N> s = new ArrayDeque<>();
+		visitLeftSubtree(root, s);
+		final StringJoiner sj = new StringJoiner(", ", "[", "]");
+		while (!s.isEmpty()) {
+			final N node = s.pop();
+			sj.add(node.key.toString());
+			visitLeftSubtree(node.right, s);
+		}
+		return sj.toString();
+	}
+
+	private void visitLeftSubtree(N root, Deque<N> s) {
+		for (N currentNode = root; currentNode != null; currentNode = currentNode.left)
+			s.push(currentNode);
+	}
+
 	static class TreeNode<T, S extends TreeNode<T, S>> {
 		T key;
 		S left;
@@ -119,25 +146,25 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	class BSTIterator implements Iterator<E> {
-		private N current;
-		private N next;
+		private final Deque<N> s;
+		private N current = null;
 
 		BSTIterator() {
-			current = null;
-			next = treeMinimum(root);
+			s = new ArrayDeque<>();
+			visitLeftSubtree(root, s);
 		}
 
 		@Override
 		public boolean hasNext() {
-			return next != null;
+			return !s.isEmpty();
 		}
 
 		@Override
 		public E next() {
-			if (next == null)
+			if (s.isEmpty())
 				throw new NoSuchElementException();
-			current = next;
-			next = treeSuccessor(next);
+			this.current = s.pop();
+			visitLeftSubtree(current.right, s);
 			return current.key;
 		}
 
@@ -150,5 +177,4 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 			current = null;
 		}
 	}
-
 }
