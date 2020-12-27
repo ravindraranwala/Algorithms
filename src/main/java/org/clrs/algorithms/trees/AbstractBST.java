@@ -129,6 +129,24 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		return sj.toString();
 	}
 
+	protected String inorderTreeWalkIterativeAdvanced(N root) {
+		N current = treeMinimum(root);
+		N previous = current;
+		final StringJoiner sj = new StringJoiner(", ", "[", "]");
+		while (current != root || previous != root.right) {
+			if (previous != current.right)
+				sj.add(current.key.toString());
+
+			final N tmp = current;
+			if (current.right == sentinel || previous == current.right)
+				current = current.p;
+			else
+				current = treeMinimum(current.right);
+			previous = tmp;
+		}
+		return sj.toString();
+	}
+
 	private void visitLeftSubtree(N root, Deque<N> s) {
 		for (N currentNode = root; currentNode != null; currentNode = currentNode.left)
 			s.push(currentNode);

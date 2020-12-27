@@ -114,6 +114,7 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 	public void print() {
 		inorderTreeWalk(root);
 		System.out.println(inorderTreeWalkIterative(root));
+		System.out.println(inorderTreeWalkIterativeAdvanced(root));
 	}
 
 	@Override
