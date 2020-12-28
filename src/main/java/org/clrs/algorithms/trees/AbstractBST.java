@@ -133,7 +133,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		N current = treeMinimum(root);
 		N previous = current;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
-		while (current != root || previous != root.right) {
+		while (current != sentinel) {
 			if (previous != current.right)
 				sj.add(current.key.toString());
 
@@ -165,7 +165,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 
 	class BSTIterator implements Iterator<E> {
 		private final Deque<N> s;
-		private N current = null;
+		private N current = sentinel;
 
 		BSTIterator() {
 			s = new ArrayDeque<>();
@@ -188,11 +188,11 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 
 		@Override
 		public void remove() {
-			if (current == null)
+			if (current == sentinel)
 				throw new IllegalStateException();
 			delete(current.key);
 			// current is already deleted, we should not allow to delete it again.
-			current = null;
+			current = sentinel;
 		}
 	}
 }
