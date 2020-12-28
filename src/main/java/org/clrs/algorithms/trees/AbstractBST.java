@@ -113,11 +113,10 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	/**
 	 * A nonrecursive algorithm that performs an inorder tree walk.
 	 * 
-	 * @param root The root node of the tree
 	 * @return String representation of the Binary search tree. Elements are in
 	 *         sorted order.
 	 */
-	protected String inorderTreeWalkIterative(N root) {
+	protected String inorderTreeWalkIterative() {
 		final Deque<N> s = new ArrayDeque<>();
 		visitLeftSubtree(root, s);
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
@@ -129,8 +128,8 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		return sj.toString();
 	}
 
-	protected String inorderTreeWalkIterativeAdvanced(N root) {
-		N current = treeMinimum(root);
+	protected String inorderTreeWalkIterativeAdvanced() {
+		N current = root == sentinel ? sentinel : treeMinimum(root);
 		N previous = current;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
 		while (current != sentinel) {
@@ -148,7 +147,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	private void visitLeftSubtree(N root, Deque<N> s) {
-		for (N currentNode = root; currentNode != null; currentNode = currentNode.left)
+		for (N currentNode = root; currentNode != sentinel; currentNode = currentNode.left)
 			s.push(currentNode);
 	}
 

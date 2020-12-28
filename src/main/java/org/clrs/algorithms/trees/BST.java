@@ -44,6 +44,9 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 			System.out.println(val);
 		}
 		bst.print();
+//		BST<?> tree = BST.of();
+//		System.out.println(tree.inorderTreeWalkIterative());
+//		System.out.println(tree.inorderTreeWalkIterativeAdvanced());
 	}
 
 	@Override
@@ -113,8 +116,8 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 	@Override
 	public void print() {
 		inorderTreeWalk(root);
-		System.out.println(inorderTreeWalkIterative(root));
-		System.out.println(inorderTreeWalkIterativeAdvanced(root));
+		System.out.println(inorderTreeWalkIterative());
+		System.out.println(inorderTreeWalkIterativeAdvanced());
 	}
 
 	@Override
