@@ -32,11 +32,18 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 		System.out.println(String.format("Node with key %d found: %b", 2, bst.search(2)));
 		System.out.println(String.format("Node with key %d found: %b", 3, bst.search(3)));
 		bst.print();
+
+		for (final Iterator<Integer> it = bst.iterator(); it.hasNext();) {
+			Integer val = it.next();
+			System.out.println(val);
+		}
+
 		bst.delete(7);
 		bst.insert(8);
 		System.out.println();
 		bst.print();
 		System.out.println();
+
 		for (final Iterator<Integer> it = bst.iterator(); it.hasNext();) {
 			Integer val = it.next();
 			if (val == 5)
@@ -44,9 +51,19 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 			System.out.println(val);
 		}
 		bst.print();
-//		BST<?> tree = BST.of();
-//		System.out.println(tree.inorderTreeWalkIterative());
-//		System.out.println(tree.inorderTreeWalkIterativeAdvanced());
+
+		for (final Iterator<Integer> it = bst.iterator(); it.hasNext();) {
+			Integer val = it.next();
+			System.out.println(val);
+		}
+		BST<?> tree = BST.of();
+		System.out.println(tree.inorderTreeWalkIterative());
+		System.out.println(tree.inorderTreeWalkIterativeAdvanced());
+		
+		for (final Iterator<?> it = tree.iterator(); it.hasNext();) {
+			Object val = it.next();
+			System.out.println(val);
+		}
 	}
 
 	@Override
