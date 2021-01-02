@@ -117,14 +117,9 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	 *         sorted order.
 	 */
 	protected String inorderTreeWalkIterative() {
-		final Deque<N> s = new ArrayDeque<>();
-		visitLeftSubtree(root, s);
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
-		while (!s.isEmpty()) {
-			final N node = s.pop();
-			sj.add(node.key.toString());
-			visitLeftSubtree(node.right, s);
-		}
+		for (Iterator<E> it = new BSTIterator(); it.hasNext();)
+			sj.add(it.next().toString());
 		return sj.toString();
 	}
 
@@ -146,11 +141,6 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		return sj.toString();
 	}
 
-	private void visitLeftSubtree(N root, Deque<N> s) {
-		for (N currentNode = root; currentNode != sentinel; currentNode = currentNode.left)
-			s.push(currentNode);
-	}
-
 	static class TreeNode<T, S extends TreeNode<T, S>> {
 		T key;
 		S left;
@@ -165,10 +155,12 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	class BSTIterator implements Iterator<E> {
 		private final Deque<N> s;
 		private N current = sentinel;
+		private boolean leftVisited = false;
 
 		BSTIterator() {
 			s = new ArrayDeque<>();
-			visitLeftSubtree(root, s);
+			if (root != sentinel)
+				s.push(root);
 		}
 
 		@Override
@@ -178,11 +170,22 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 
 		@Override
 		public E next() {
-			if (s.isEmpty())
-				throw new NoSuchElementException();
-			this.current = s.pop();
-			visitLeftSubtree(current.right, s);
-			return current.key;
+			while (!s.isEmpty()) {
+				final N n = s.peek();
+				if (n.left != sentinel && !leftVisited)
+					s.push(n.left);
+				else {
+					current = s.pop();
+					if (n.right == sentinel)
+						leftVisited = true;
+					else {
+						s.push(n.right);
+						leftVisited = false;
+					}
+					return current.key;
+				}
+			}
+			throw new NoSuchElementException();
 		}
 
 		@Override
