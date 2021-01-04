@@ -124,19 +124,23 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	protected String inorderTreeWalkIterativeAdvanced() {
-		N current = root == sentinel ? sentinel : treeMinimum(root);
-		N previous = current;
+		N next = root;
+		N current = sentinel;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
-		while (current != sentinel) {
-			if (previous != current.right)
-				sj.add(current.key.toString());
-
-			final N tmp = current;
-			if (current.right == sentinel || previous == current.right)
-				current = current.p;
-			else
-				current = treeMinimum(current.right);
-			previous = tmp;
+		while (next != sentinel) {
+			if (next.left != sentinel && (current == sentinel || comparator.compare(next.left.key, current.key) > 0))
+				next = next.left;
+			else {
+				if (current == sentinel || comparator.compare(next.key, current.key) > 0) {
+					sj.add(next.key.toString());
+					current = next;
+					if (current.right == sentinel)
+						next = current.p;
+					else
+						next = current.right;
+				} else
+					next = next.p;
+			}
 		}
 		return sj.toString();
 	}
@@ -155,7 +159,6 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	class BSTIterator implements Iterator<E> {
 		private final Deque<N> s;
 		private N current = sentinel;
-		private boolean leftVisited = false;
 
 		BSTIterator() {
 			s = new ArrayDeque<>();
@@ -172,16 +175,13 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		public E next() {
 			while (!s.isEmpty()) {
 				final N n = s.peek();
-				if (n.left != sentinel && !leftVisited)
+				if (n.left != sentinel && (current == sentinel || comparator.compare(n.left.key, current.key) > 0))
 					s.push(n.left);
 				else {
 					current = s.pop();
-					if (n.right == sentinel)
-						leftVisited = true;
-					else {
-						s.push(n.right);
-						leftVisited = false;
-					}
+					if (current.right != sentinel)
+						s.push(current.right);
+
 					return current.key;
 				}
 			}
