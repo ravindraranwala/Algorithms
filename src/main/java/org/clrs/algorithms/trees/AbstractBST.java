@@ -159,6 +159,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	class BSTIterator implements Iterator<E> {
 		private final Deque<N> s;
 		private N current = sentinel;
+		private boolean down = true;
 
 		BSTIterator() {
 			s = new ArrayDeque<>();
@@ -175,12 +176,16 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		public E next() {
 			while (!s.isEmpty()) {
 				final N n = s.peek();
-				if (n.left != sentinel && (current == sentinel || comparator.compare(n.left.key, current.key) > 0))
+				if (n.left != sentinel && down)
 					s.push(n.left);
 				else {
 					current = s.pop();
-					if (current.right != sentinel)
+					if (current.right == sentinel)
+						down = false;
+					else {
 						s.push(current.right);
+						down = true;
+					}
 
 					return current.key;
 				}
