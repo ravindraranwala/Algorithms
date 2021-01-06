@@ -146,22 +146,22 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	protected String inorderTreeWalkIterativeAdvanced() {
-		N next = root;
-		N current = sentinel;
+		N current = root;
+		N previous = root;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
-		while (next != sentinel) {
-			if (next.left != sentinel && (current == sentinel || comparator.compare(next.left.key, current.key) > 0))
-				next = next.left;
-			else {
-				if (current == sentinel || comparator.compare(next.key, current.key) > 0) {
-					sj.add(next.key.toString());
-					current = next;
-					if (current.right == sentinel)
-						next = current.p;
-					else
-						next = current.right;
-				} else
-					next = next.p;
+		while (current != sentinel) {
+			if (current.left != sentinel && current.left != previous && current.right != previous) {
+				previous = current;
+				current = current.left;
+			} else {
+				if (current.right != previous)
+					sj.add(current.key.toString());
+				final N tmp = current;
+				if (current.right == sentinel || current.right == previous)
+					current = current.p;
+				else
+					current = current.right;
+				previous = tmp;
 			}
 		}
 		return sj.toString();
