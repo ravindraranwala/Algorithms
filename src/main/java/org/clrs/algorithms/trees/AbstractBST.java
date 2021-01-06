@@ -110,6 +110,28 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		}
 	}
 
+	private String inorderTreeWalkIterativeV2() {
+		final Deque<N> s = new ArrayDeque<>();
+		boolean done = root == sentinel;
+		N nextLeft = root;
+		final StringJoiner sj = new StringJoiner(", ", "[", "]");
+		while (!done) {
+			if (nextLeft != sentinel) {
+				s.push(nextLeft);
+				nextLeft = nextLeft.left;
+			} else {
+				final N current = s.pop();
+				sj.add(current.key.toString());
+				if (current.right != sentinel) {
+					s.push(current.right);
+					nextLeft = current.right.left;
+				}
+				done = s.isEmpty();
+			}
+		}
+		return sj.toString();
+	}
+
 	/**
 	 * A nonrecursive algorithm that performs an inorder tree walk.
 	 * 
@@ -157,36 +179,32 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	class BSTIterator implements Iterator<E> {
-		private final Deque<N> s;
+		private final Deque<N> s = new ArrayDeque<>();
+		private N nextLeft = root;
+		private boolean done = root == sentinel;
 		private N current = sentinel;
-		private boolean down = true;
 
 		BSTIterator() {
-			s = new ArrayDeque<>();
-			if (root != sentinel)
-				s.push(root);
 		}
 
 		@Override
 		public boolean hasNext() {
-			return !s.isEmpty();
+			return !done;
 		}
 
 		@Override
 		public E next() {
-			while (!s.isEmpty()) {
-				final N n = s.peek();
-				if (n.left != sentinel && down)
-					s.push(n.left);
-				else {
+			while (!done) {
+				if (nextLeft != sentinel) {
+					s.push(nextLeft);
+					nextLeft = nextLeft.left;
+				} else {
 					current = s.pop();
-					if (current.right == sentinel)
-						down = false;
-					else {
+					if (current.right != sentinel) {
 						s.push(current.right);
-						down = true;
+						nextLeft = current.right.left;
 					}
-
+					done = s.isEmpty();
 					return current.key;
 				}
 			}
