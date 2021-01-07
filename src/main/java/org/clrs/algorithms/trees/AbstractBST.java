@@ -220,4 +220,42 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 			current = sentinel;
 		}
 	}
+
+	class BSTIteratorAdvanced implements Iterator<E> {
+		private N current = root;
+		private N previous = root;
+
+		BSTIteratorAdvanced() {
+		}
+
+		@Override
+		public boolean hasNext() {
+			return current != sentinel;
+		}
+
+		@Override
+		public E next() {
+			E val = null;
+			while (current != sentinel) {
+				if (current.left != sentinel && current.left != previous && current.right != previous) {
+					previous = current;
+					current = current.left;
+				} else {
+					if (val == null && current.right != previous)
+						val = current.key;
+
+					final N tmp = current;
+					if (current.right == sentinel || current.right == previous)
+						current = current.p;
+					else
+						current = current.right;
+
+					previous = tmp;
+					if (current == sentinel || current.right != previous)
+						return val;
+				}
+			}
+			throw new NoSuchElementException();
+		}
+	}
 }
