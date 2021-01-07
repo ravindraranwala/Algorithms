@@ -122,11 +122,9 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 			} else {
 				final N current = s.pop();
 				sj.add(current.key.toString());
-				if (current.right != sentinel) {
-					s.push(current.right);
-					nextLeft = current.right.left;
-				}
-				done = s.isEmpty();
+				if (current.right != sentinel)
+					nextLeft = current.right;
+				done = s.isEmpty() && nextLeft == sentinel;
 			}
 		}
 		return sj.toString();
@@ -200,11 +198,9 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 					nextLeft = nextLeft.left;
 				} else {
 					current = s.pop();
-					if (current.right != sentinel) {
-						s.push(current.right);
-						nextLeft = current.right.left;
-					}
-					done = s.isEmpty();
+					if (current.right != sentinel)
+						nextLeft = current.right;
+					done = s.isEmpty() && nextLeft == sentinel;
 					return current.key;
 				}
 			}
