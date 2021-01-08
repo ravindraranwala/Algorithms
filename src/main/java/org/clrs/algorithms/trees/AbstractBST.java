@@ -113,18 +113,18 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	private String inorderTreeWalkIterativeV2() {
 		final Deque<N> s = new ArrayDeque<>();
 		boolean done = root == sentinel;
-		N nextLeft = root;
+		N current = root;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
 		while (!done) {
-			if (nextLeft != sentinel) {
-				s.push(nextLeft);
-				nextLeft = nextLeft.left;
+			if (current != sentinel) {
+				s.push(current);
+				current = current.left;
 			} else {
-				final N current = s.pop();
-				sj.add(current.key.toString());
-				if (current.right != sentinel)
-					nextLeft = current.right;
-				done = s.isEmpty() && nextLeft == sentinel;
+				final N r = s.pop();
+				sj.add(r.key.toString());
+				if (r.right != sentinel)
+					current = r.right;
+				done = s.isEmpty() && current == sentinel;
 			}
 		}
 		return sj.toString();
@@ -178,42 +178,39 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 
 	class BSTIterator implements Iterator<E> {
 		private final Deque<N> s = new ArrayDeque<>();
-		private N nextLeft = root;
-		private boolean done = root == sentinel;
-		private N current = sentinel;
+		private N current = root;
+		private N r = sentinel;
 
 		BSTIterator() {
 		}
 
 		@Override
 		public boolean hasNext() {
-			return !done;
+			return !s.isEmpty() || current != sentinel;
 		}
 
 		@Override
 		public E next() {
-			while (!done) {
-				if (nextLeft != sentinel) {
-					s.push(nextLeft);
-					nextLeft = nextLeft.left;
+			while (true) {
+				if (current != sentinel) {
+					s.push(current);
+					current = current.left;
 				} else {
-					current = s.pop();
-					if (current.right != sentinel)
-						nextLeft = current.right;
-					done = s.isEmpty() && nextLeft == sentinel;
-					return current.key;
+					r = s.pop();
+					if (r.right != sentinel)
+						current = r.right;
+					return r.key;
 				}
 			}
-			throw new NoSuchElementException();
 		}
 
 		@Override
 		public void remove() {
-			if (current == sentinel)
+			if (r == sentinel)
 				throw new IllegalStateException();
-			delete(current.key);
+			delete(r.key);
 			// current is already deleted, we should not allow to delete it again.
-			current = sentinel;
+			r = sentinel;
 		}
 	}
 
