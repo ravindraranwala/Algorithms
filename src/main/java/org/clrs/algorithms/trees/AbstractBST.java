@@ -163,10 +163,10 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 
 	protected String inorderTreeWalkIterativeAdvanced() {
 		N current = root;
-		N previous = root;
+		N previous = sentinel;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
 		while (current != sentinel) {
-			if (current.left != sentinel && current.left != previous && current.right != previous) {
+			if (current.left != sentinel && current.p == previous) {
 				previous = current;
 				current = current.left;
 			} else {
