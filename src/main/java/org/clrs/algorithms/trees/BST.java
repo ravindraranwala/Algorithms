@@ -7,11 +7,11 @@ import org.clrs.algorithms.trees.AbstractBST.TreeNode;
 import org.clrs.algorithms.trees.BST.BSTreeNode;
 
 public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E> {
-	private BST(Comparator<? super E> comparator) {
+	private BST(final Comparator<? super E> comparator) {
 		super(comparator, null);
 	}
 
-	public static <T> BST<T> of(Comparator<? super T> comparator) {
+	public static <T> BST<T> of(final Comparator<? super T> comparator) {
 		return new BST<>(comparator);
 	}
 
@@ -67,14 +67,14 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 	}
 
 	@Override
-	public void delete(E key) {
+	public void delete(final E key) {
 		final BSTreeNode<E> nodeToDelete = iterativeTreeSearch(key);
 		if (nodeToDelete == null)
 			throw new IllegalArgumentException("Invalid key: " + key);
 		treeDelete(nodeToDelete);
 	}
 
-	private void treeDelete(BSTreeNode<E> z) {
+	private void treeDelete(final BSTreeNode<E> z) {
 		if (z.left == null)
 			transplant(z, z.right);
 		else if (z.right == null)
@@ -92,7 +92,7 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 		}
 	}
 
-	private void transplant(BSTreeNode<E> u, BSTreeNode<E> v) {
+	private void transplant(final BSTreeNode<E> u, final BSTreeNode<E> v) {
 		if (u.p == null)
 			root = v;
 		else if (u.p.left == u)
@@ -105,11 +105,11 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 	}
 
 	@Override
-	public void insert(E key) {
+	public void insert(final E key) {
 		treeInsert(new BSTreeNode<>(key));
 	}
 
-	private void treeInsert(BSTreeNode<E> z) {
+	private void treeInsert(final BSTreeNode<E> z) {
 		BSTreeNode<E> y = null;
 		BSTreeNode<E> x = this.root;
 

@@ -47,11 +47,11 @@ public class RBT<E> extends AbstractBST<E, RBTreeNode<E>> {
 	}
 
 	@Override
-	public void insert(E key) {
+	public void insert(final E key) {
 		rbInsert(new RBTreeNode<>(key));
 	}
 
-	private void rbInsert(RBTreeNode<E> z) {
+	private void rbInsert(final RBTreeNode<E> z) {
 		RBTreeNode<E> y = nil;
 		RBTreeNode<E> x = root;
 		while (x != nil) {

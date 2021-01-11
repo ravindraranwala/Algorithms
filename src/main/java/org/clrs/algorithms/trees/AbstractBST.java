@@ -42,29 +42,46 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		final N currNode = iterativeTreeSearch(key);
 		if (currNode == sentinel)
 			throw new IllegalArgumentException("Invalid key: " + key);
-		return treeSuccessor(currNode).key;
+		final N succ = treeSuccessor(currNode);
+		return succ == sentinel ? null : succ.key;
 	}
 
-	private N treeSuccessor(N x) {
+	private N treeSuccessor(final N x) {
 		if (x.right != sentinel)
 			return treeMinimum(x.right);
 
-		N y = x.p;
-		while (y != sentinel && y.right == x) {
-			x = y;
+		N y = x;
+		while (y.p != sentinel && y.p.right == y)
 			y = y.p;
-		}
-		return y;
+		return y.p;
+	}
+
+	public final E predecessor(E key) {
+		final N currNode = iterativeTreeSearch(key);
+		if (currNode == sentinel)
+			throw new IllegalArgumentException("Invalid key: " + key);
+		final N pred = treePredecessor(currNode);
+		return pred == sentinel ? null : pred.key;
+	}
+
+	private N treePredecessor(final N x) {
+		if (x.left != sentinel)
+			return treeMaximum(x.left);
+		N y = x;
+		while (y.p != sentinel && y.p.left == y)
+			y = y.p;
+		return y.p;
 	}
 
 	public final E min() {
 		return treeMinimum(root).key;
 	}
 
-	protected final N treeMinimum(N x) {
-		while (x.left != sentinel)
-			x = x.left;
-		return x;
+	protected final N treeMinimum(final N x) {
+		N min = x;
+		while (min.left != sentinel)
+			min = min.left;
+		return min;
 	}
 
 	public final E max() {
@@ -72,13 +89,14 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	// Need to find the predecessor of a given node.
-	private N treeMaximum(N x) {
-		while (x.right != sentinel)
-			x = x.right;
-		return x;
+	private N treeMaximum(final N x) {
+		N max = x;
+		while (max.right != sentinel)
+			max = max.right;
+		return max;
 	}
 
-	protected final N iterativeTreeSearch(E k) {
+	protected final N iterativeTreeSearch(final E k) {
 		N x = root;
 		while (x != sentinel && !x.key.equals(k)) {
 			if (comparator.compare(k, x.key) < 0)
@@ -89,11 +107,11 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		return x;
 	}
 
-	public final boolean search(E k) {
+	public final boolean search(final E k) {
 		return treeSearch(root, k) != null;
 	}
 
-	private N treeSearch(N x, E k) {
+	private N treeSearch(final N x, final E k) {
 		if (x == sentinel || k.equals(x.key))
 			return x;
 		if (comparator.compare(k, x.key) < 0)
@@ -102,7 +120,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 			return treeSearch(x.right, k);
 	}
 
-	protected void inorderTreeWalk(N x) {
+	protected void inorderTreeWalk(final N x) {
 		if (x != sentinel) {
 			inorderTreeWalk(x.left);
 			System.out.print(x.key + " ");
