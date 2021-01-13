@@ -130,10 +130,9 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 
 	private String inorderTreeWalkIterativeV2() {
 		final Deque<N> s = new ArrayDeque<>();
-		boolean done = root == sentinel;
 		N current = root;
 		final StringJoiner sj = new StringJoiner(", ", "[", "]");
-		while (!done) {
+		while (!s.isEmpty() || current != sentinel) {
 			if (current != sentinel) {
 				s.push(current);
 				current = current.left;
@@ -141,7 +140,6 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 				final N r = s.pop();
 				sj.add(r.key.toString());
 				current = r.right;
-				done = s.isEmpty() && current == sentinel;
 			}
 		}
 		return sj.toString();
