@@ -58,7 +58,6 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 		}
 		BST<?> tree = BST.of();
 		System.out.println(tree.inorderTreeWalkIterative());
-		System.out.println(tree.inorderTreeWalkIterativeAdvanced());
 		
 		for (final Iterator<?> it = tree.iterator(); it.hasNext();) {
 			Object val = it.next();
@@ -134,7 +133,6 @@ public class BST<E> extends AbstractBST<E, BSTreeNode<E>> implements Iterable<E>
 	public void print() {
 		inorderTreeWalk(root);
 		System.out.println(inorderTreeWalkIterative());
-		System.out.println(inorderTreeWalkIterativeAdvanced());
 	}
 
 	@Override

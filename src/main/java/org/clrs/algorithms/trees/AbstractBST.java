@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
 import org.clrs.algorithms.trees.AbstractBST.TreeNode;
@@ -158,28 +157,6 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 		return sj.toString();
 	}
 
-	protected String inorderTreeWalkIterativeAdvanced() {
-		N current = root;
-		N previous = sentinel;
-		final StringJoiner sj = new StringJoiner(", ", "[", "]");
-		while (current != sentinel) {
-			if (current.left != sentinel && current.p == previous) {
-				previous = current;
-				current = current.left;
-			} else {
-				if (current.right != previous)
-					sj.add(current.key.toString());
-				final N tmp = current;
-				if (current.right == sentinel || current.right == previous)
-					current = current.p;
-				else
-					current = current.right;
-				previous = tmp;
-			}
-		}
-		return sj.toString();
-	}
-
 	static class TreeNode<T, S extends TreeNode<T, S>> {
 		T key;
 		S left;
@@ -225,44 +202,6 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 			delete(r.key);
 			// current is already deleted, we should not allow to delete it again.
 			r = sentinel;
-		}
-	}
-
-	class BSTIteratorAdvanced implements Iterator<E> {
-		private N current = root;
-		private N previous = root;
-
-		BSTIteratorAdvanced() {
-		}
-
-		@Override
-		public boolean hasNext() {
-			return current != sentinel;
-		}
-
-		@Override
-		public E next() {
-			E val = null;
-			while (current != sentinel) {
-				if (current.left != sentinel && current.left != previous && current.right != previous) {
-					previous = current;
-					current = current.left;
-				} else {
-					if (val == null && current.right != previous)
-						val = current.key;
-
-					final N tmp = current;
-					if (current.right == sentinel || current.right == previous)
-						current = current.p;
-					else
-						current = current.right;
-
-					previous = tmp;
-					if (current == sentinel || current.right != previous)
-						return val;
-				}
-			}
-			throw new NoSuchElementException();
 		}
 	}
 }
