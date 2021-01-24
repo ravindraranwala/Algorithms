@@ -158,7 +158,7 @@ public abstract class AbstractBST<E, N extends TreeNode<E, N>> {
 	}
 
 	static class TreeNode<T, S extends TreeNode<T, S>> {
-		T key;
+		final T key;
 		S left;
 		S right;
 		S p;
