@@ -12,7 +12,7 @@ public class TopDownMemoizedCutRod {
 		final double[] p = { 0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
 		final int n = 7;
 		final RevAndPieceLenTables tables = memoizedCutRod(p, n);
-		RodCutting.printCutRodSolution(tables.r, tables.s, n);
+		RodCutting.printCutRodSolution(tables, n);
 		
 	}
 

@@ -8,15 +8,15 @@ public class RodCutting {
 	public static void main(String[] args) {
 		final double[] p = { 0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
 		final int n = 7;
-		final RevAndPieceLenTables revAndLenTables = bottomUpCutRod(p, n);
-		printCutRodSolution(revAndLenTables.r, revAndLenTables.s, n);
+		final RevAndPieceLenTables tabs = bottomUpCutRod(p, n);
+		printCutRodSolution(tabs, n);
 	}
 
-	static void printCutRodSolution(double[] r, int[] s, int n) {
-		System.out.println(String.format("Max revenue obtainable: %f", r[n]));
+	static void printCutRodSolution(RevAndPieceLenTables tabs, int n) {
+		System.out.println(String.format("Max revenue obtainable: %f", tabs.r[n]));
 		while (n > 0) {
-			System.out.println(s[n]);
-			n = n - s[n];
+			System.out.println(tabs.s[n]);
+			n = n - tabs.s[n];
 		}
 	}
 
