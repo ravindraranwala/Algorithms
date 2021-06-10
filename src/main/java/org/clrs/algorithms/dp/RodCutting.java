@@ -1,6 +1,9 @@
 package org.clrs.algorithms.dp;
 
-public final class RodCutting {
+public class RodCutting {
+	private RodCutting() {
+		throw new AssertionError();
+	}
 
 	public static void main(String[] args) {
 		double[] p = { 0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
@@ -34,11 +37,11 @@ public final class RodCutting {
 		return new RevAndPieceLenTables(r, s);
 	}
 
-	static final class RevAndPieceLenTables {
+	static class RevAndPieceLenTables {
 		final double[] r;
 		final int[] s;
 
-		public RevAndPieceLenTables(double[] r, int[] s) {
+		RevAndPieceLenTables(double[] r, int[] s) {
 			super();
 			this.r = r;
 			this.s = s;
