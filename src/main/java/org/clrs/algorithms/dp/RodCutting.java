@@ -6,16 +6,17 @@ public class RodCutting {
 	}
 
 	public static void main(String[] args) {
-		double[] p = { 0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
-		printCutRodSolution(p, 7);
+		final double[] p = { 0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
+		final int n = 7;
+		final RevAndPieceLenTables revAndLenTables = bottomUpCutRod(p, n);
+		printCutRodSolution(revAndLenTables.r, revAndLenTables.s, n);
 	}
 
-	private static void printCutRodSolution(double[] p, int n) {
-		final RevAndPieceLenTables revAndLenTables = bottomUpCutRod(p, n);
-		System.out.println(String.format("Max revenue obtainable: %f", revAndLenTables.r[n]));
+	static void printCutRodSolution(double[] r, int[] s, int n) {
+		System.out.println(String.format("Max revenue obtainable: %f", r[n]));
 		while (n > 0) {
-			System.out.println(revAndLenTables.s[n]);
-			n = n - revAndLenTables.s[n];
+			System.out.println(s[n]);
+			n = n - s[n];
 		}
 	}
 
