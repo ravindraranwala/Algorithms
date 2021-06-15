@@ -13,7 +13,7 @@ public class TopDownMemoizedCutRod {
 		final int n = 7;
 		final RevAndPieceLenTables tables = memoizedCutRod(p, n);
 		RodCutting.printCutRodSolution(tables, n);
-		
+
 	}
 
 	public static RevAndPieceLenTables memoizedCutRod(double[] p, int n) {
@@ -28,18 +28,16 @@ public class TopDownMemoizedCutRod {
 	private static double memoizedCutRodAux(double[] p, int n, double[] r, int[] s) {
 		if (r[n] >= 0)
 			return r[n];
-		double q = Integer.MIN_VALUE;
-		if (n == 0)
-			q = 0;
-		else {
-			for (int i = 1; i <= n; i++) {
-				final double rev = memoizedCutRodAux(p, n - i, r, s);
-				if (q < p[i] + rev) {
-					q = p[i] + rev;
-					s[n] = i;
-				}
+		double q = 0;
+
+		for (int i = 1; i <= n; i++) {
+			final double rev = memoizedCutRodAux(p, n - i, r, s);
+			if (q < p[i] + rev) {
+				q = p[i] + rev;
+				s[n] = i;
 			}
 		}
+
 		r[n] = q;
 		return q;
 	}
