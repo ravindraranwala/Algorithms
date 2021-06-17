@@ -10,7 +10,7 @@ public final class MatrixChainOrder {
 		printOptimalParens(mAndS.s, 1, n);
 	}
 
-	private static void printOptimalParens(int[][] s, int i, int j) {
+	static void printOptimalParens(int[][] s, int i, int j) {
 		if (i == j)
 			System.out.print("A" + i);
 
@@ -22,7 +22,7 @@ public final class MatrixChainOrder {
 		}
 	}
 
-	private static Tables matrixChainOrder(int[] p) {
+	static Tables matrixChainOrder(int[] p) {
 		final int n = p.length - 1;
 		final int[][] m = new int[n + 1][n + 1];
 		final int[][] s = new int[n][n + 1];
