@@ -44,10 +44,9 @@ public class MatrixChainMultiplication {
 		final int[][] c = new int[oneRows][twoCols];
 		for (int p = 0; p < oneRows; p++) {
 			for (int q = 0; q < twoCols; q++) {
-				int sum = 0;
+				c[p][q] = 0;
 				for (int k = 0; k < oneCols; k++)
-					sum += mOne[p][k] * mTwo[k][q];
-				c[p][q] = sum;
+					c[p][q] += mOne[p][k] * mTwo[k][q];
 			}
 		}
 		return c;
