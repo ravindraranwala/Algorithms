@@ -11,10 +11,10 @@ public class MatrixChainMultiplication {
 	}
 
 	public static void main(String[] args) {
-		final int[][] m1 = { { 6, 3 } };
-		final int[][] m2 = { { 2, -3, 2 }, { 6, -5, 1 } };
-		final int[][] m3 = { { -6, 2 }, { -3, 5 }, { 4, 5 } };
-		final int[] p = { 1, 2, 3, 2 };
+		final int[][] m1 = { { 1, -2 }, { 2, -1 } };
+		final int[][] m2 = { { 1, 0, 2 }, { 3, -2, 1 } };
+		final int[][] m3 = { { -1, 0 }, { 3, 1 }, { 2, 4 } };
+		final int[] p = { 2, 2, 3, 2 };
 		final Tables mAndS = MatrixChainOrder.matrixChainOrder(p);
 		final int n = p.length - 1;
 		System.out.println(String.format("Min number of scalar multiplications: %d", mAndS.m[1][n]));
@@ -44,10 +44,9 @@ public class MatrixChainMultiplication {
 		final int[][] c = new int[oneRows][twoCols];
 		for (int p = 0; p < oneRows; p++) {
 			for (int q = 0; q < twoCols; q++) {
-				int sum = 0;
+				c[p][q] = 0;
 				for (int k = 0; k < oneCols; k++)
-					sum += mOne[p][k] * mTwo[k][q];
-				c[p][q] = sum;
+					c[p][q] += mOne[p][k] * mTwo[k][q];
 			}
 		}
 		return c;
