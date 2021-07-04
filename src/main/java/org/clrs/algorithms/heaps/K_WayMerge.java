@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.clrs.algorithms.util.ArrayUtil;
+
 public class K_WayMerge {
 	private K_WayMerge() {
 		throw new AssertionError("Non instantiable !");
@@ -27,7 +29,7 @@ public class K_WayMerge {
 				sortedLists.length);
 		int n = 0;
 		for (T[] a : sortedLists) {
-			final Iterator<T> it = Arrays.asList(a).iterator();
+			final Iterator<T> it = ArrayUtil.iterator(a);
 			if (it.hasNext())
 				queue.insert(new AbstractMap.SimpleEntry<>(it.next(), it));
 			n += a.length;
