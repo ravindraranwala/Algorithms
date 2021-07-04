@@ -37,10 +37,9 @@ public class K_WayMerge {
 
 		@SuppressWarnings("unchecked")
 		final T[] sortedData = (T[]) Array.newInstance(clazz, n);
-		int count = 0;
-		while (!queue.isEmpty()) {
+		for (int count = 0; !queue.isEmpty(); count++) {
 			final Map.Entry<T, Iterator<T>> entry = queue.extract();
-			sortedData[count++] = entry.getKey();
+			sortedData[count] = entry.getKey();
 			final Iterator<T> it = entry.getValue();
 			if (it.hasNext())
 				queue.insert(new AbstractMap.SimpleEntry<>(it.next(), it));
