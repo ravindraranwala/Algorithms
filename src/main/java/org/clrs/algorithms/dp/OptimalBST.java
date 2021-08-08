@@ -44,19 +44,19 @@ public final class OptimalBST {
 
 		return new Tables(e, root);
 	}
-	
+
 	private static void constructOptimalBstAux(int[][] root, int i, int j, int p) {
 		String key = "d" + j;
-		if(j >= i)
+		if (j >= i)
 			key = "k" + root[i][j];
-		if(i == 1 && j == root.length - 1)
+		if (i == 1 && j == root.length - 1)
 			System.out.println(key + " is the root");
-		else if(j < p)
+		else if (j < p)
 			System.out.println(String.format(key + " is the left child of k%d", p));
 		else
 			System.out.println(String.format(key + " is the right child of k%d", p));
-		
-		if(j >= i) {
+
+		if (j >= i) {
 			final int r = root[i][j];
 			constructOptimalBstAux(root, i, r - 1, r);
 			constructOptimalBstAux(root, r + 1, j, r);
