@@ -1,6 +1,8 @@
 package org.clrs.algorithms.greedy;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 class ActivitySelection {
 
@@ -13,6 +15,8 @@ class ActivitySelection {
 		final int[] f = { 4, 5, 6, 7, 9, 9, 10, 11, 12, 14, 16 };
 		final int[] a = recursiveActivitySelector(s, f, -1, 0);
 		System.out.println(Arrays.toString(a));
+		final Set<Integer> a1 = greedyActivitySelector(s, f);
+		System.out.println(a1);
 	}
 
 	static int[] recursiveActivitySelector(int[] s, int[] f, int k, int i) {
@@ -26,5 +30,18 @@ class ActivitySelection {
 			return a;
 		} else
 			return new int[i];
+	}
+
+	static Set<Integer> greedyActivitySelector(int[] s, int[] f) {
+		final Set<Integer> a = new LinkedHashSet<>();
+		a.add(0);
+		int k = 0;
+		for (int m = 2; m < s.length; m++) {
+			if (s[m] >= f[k]) {
+				a.add(m);
+				k = m;
+			}
+		}
+		return a;
 	}
 }
