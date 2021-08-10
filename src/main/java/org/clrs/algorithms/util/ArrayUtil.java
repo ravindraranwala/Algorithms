@@ -1,6 +1,7 @@
 package org.clrs.algorithms.util;
 
 import java.lang.reflect.Array;
+import java.util.Iterator;
 
 public class ArrayUtil {
 	private ArrayUtil() {
@@ -19,5 +20,17 @@ public class ArrayUtil {
 		System.arraycopy(first, 0, result, 0, firstLen);
 		System.arraycopy(second, 0, result, firstLen, second.length);
 		return result;
+	}
+
+	/**
+	 * Returns an iterator over the elements of the given array. This iterator is
+	 * fail-fast.
+	 * 
+	 * @param <E> array element type
+	 * @param arr array of elements
+	 * @return an iterator over the elements of the given array.
+	 */
+	public static <E> Iterator<E> iterator(E[] arr) {
+		return new ArrayIterator<>(arr);
 	}
 }

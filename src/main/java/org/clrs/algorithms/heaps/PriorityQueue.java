@@ -3,6 +3,7 @@ package org.clrs.algorithms.heaps;
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 import org.clrs.algorithms.dc.Student;
@@ -128,14 +129,14 @@ public class PriorityQueue<E> implements Queue<E> {
 				smallest = l;
 			if (r <= heapSize && comparator.compare(a[r], a[smallest]) < 0)
 				smallest = r;
-			if(smallest == i)
+			if (smallest == i)
 				return;
 
 			// exchange the elements and build the heap property.
 			final E tmp = a[i];
 			a[i] = a[smallest];
 			a[smallest] = tmp;
-			
+
 			i = smallest;
 		}
 	}
@@ -169,6 +170,7 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	@Override
 	public void insert(E elt) {
+		Objects.requireNonNull(elt);
 		ensureCapacity(size + 2);
 		a[size + 1] = elt;
 		decreaseKey(size + 1);

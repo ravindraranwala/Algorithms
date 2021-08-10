@@ -45,32 +45,26 @@ public final class OptimalBST {
 		return new Tables(e, root);
 	}
 
-	private static void constructOptimalBst(int[][] root) {
-		final int n = root.length - 1;
-		final int r = root[1][n];
-		System.out.println(String.format("k%d is the root", r));
+	private static void constructOptimalBstAux(int[][] root, int i, int j, int p) {
+		String key = "d" + j;
+		if (j >= i)
+			key = "k" + root[i][j];
+		if (i == 1 && j == root.length - 1)
+			System.out.println(key + " is the root");
+		else if (j < p)
+			System.out.println(String.format(key + " is the left child of k%d", p));
+		else
+			System.out.println(String.format(key + " is the right child of k%d", p));
 
-		printSubtree(root, 1, n);
+		if (j >= i) {
+			final int r = root[i][j];
+			constructOptimalBstAux(root, i, r - 1, r);
+			constructOptimalBstAux(root, r + 1, j, r);
+		}
 	}
 
-	private static void printSubtree(int[][] root, int i, int j) {
-		final int r = root[i][j];
-		// print left subtree
-		final int current = root[i][j];
-		if (r == i)
-			System.out.println(String.format("d%d is the left child of k%d", r - 1, current));
-		else {
-			System.out.println(String.format("k%d is the left child of k%d", root[i][r - 1], current));
-			printSubtree(root, i, r - 1);
-		}
-
-		// print the right subtree
-		if (r == j)
-			System.out.println(String.format("d%d is the right child of k%d", j, current));
-		else {
-			System.out.println(String.format("k%d is the right child of k%d", root[r + 1][j], current));
-			printSubtree(root, r + 1, j);
-		}
+	private static void constructOptimalBst(int[][] root) {
+		constructOptimalBstAux(root, 1, root.length - 1, -1);
 	}
 
 	static final class Tables {
