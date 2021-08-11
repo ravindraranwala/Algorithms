@@ -1,8 +1,7 @@
 package org.clrs.algorithms.dp;
 
 class LongestPalindromeSubseq {
-
-	private LongestPalindromeSubseq() {
+	LongestPalindromeSubseq() {
 		throw new AssertionError("Non instantiable !");
 	}
 
@@ -35,15 +34,16 @@ class LongestPalindromeSubseq {
 	static void constructLongestPalindromeSubsequence(int[][] p, String s, int i, int j, StringBuilder sb) {
 		if (i == j)
 			sb.append(s.charAt(i));
-		if (j > i) {
-			if (s.charAt(i) == s.charAt(j)) {
-				sb.append(s.charAt(i));
-				constructLongestPalindromeSubsequence(p, s, i + 1, j - 1, sb);
-				sb.append(s.charAt(j));
-			} else if (p[i][j] == p[i][j - 1])
-				constructLongestPalindromeSubsequence(p, s, i, j - 1, sb);
+		while (j > i && s.charAt(i) != s.charAt(j)) {
+			if (p[i][j] == p[i][j - 1])
+				j = j - 1;
 			else
-				constructLongestPalindromeSubsequence(p, s, i + 1, j, sb);
+				i = i + 1;
+		}
+		if (j > i && s.charAt(i) == s.charAt(j)) {
+			sb.append(s.charAt(i));
+			constructLongestPalindromeSubsequence(p, s, i + 1, j - 1, sb);
+			sb.append(s.charAt(j));
 		}
 	}
 }
