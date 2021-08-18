@@ -1,135 +1,93 @@
 package org.clrs.algorithms.dp;
 
-import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.COPY;
-import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.DELETE;
-import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.INSERT;
-import static org.clrs.algorithms.dp.EditDistance.TRANSFORMATION.REPLACE;
+import static org.clrs.algorithms.dp.EditDistance.Operation.COPY;
+import static org.clrs.algorithms.dp.EditDistance.Operation.DELETE;
+import static org.clrs.algorithms.dp.EditDistance.Operation.INSERT;
+import static org.clrs.algorithms.dp.EditDistance.Operation.REPLACE;
 
-public class EditDistance {
-	private static final String COMMA = ", ";
-	
-	private EditDistance() {
+import java.util.StringJoiner;
+
+class EditDistance {
+	private static final char PLACE_HOLDER = '_';
+
+	EditDistance() {
 		throw new AssertionError();
 	}
-	
+
 	public static void main(String[] args) {
-		// int minDist = editDistance("mart", "karma");
-		// sample data used to test (ABCDE, ABDE), (, a), (ISLANDER, SLANDER), (KITTEN,
-		// SITTING), (INTENTION, EXECUTION), (horse, ros) and
-		// (AGGCTATCACCTGACCTCCAGGCCGATGCCC, TAGCTATCACGACCGCGGTCGATTTGCCCGAC)
-		String x = "AGGCTATCACCTGACCTCCAGGCCGATGCCC";
-		String y = "TAGCTATCACGACCGCGGTCGATTTGCCCGAC";
-		int[][] c = editDistance(x, y);
-		int minDist = c[x.length()][y.length()];
+		final String x = "AGGCTATCACCTGACCTCCAGGCCGATGCCC";
+		final String y = "TAGCTATCACGACCGCGGTCGATTTGCCCGAC";
+		final int[][] d = minDistance(x, y);
+		final int minDist = d[x.length()][y.length()];
 		System.out.println(String.format("Min Edit Distance: %d", minDist));
-		StringBuilder alignOne = new StringBuilder();
-		StringBuilder alignTwo = new StringBuilder();
-		printAlignment(c, x, y, x.length(), y.length(), alignOne, alignTwo);
-		System.out.println();
-		System.out.println(alignOne);
-		System.out.println(alignTwo);
+		final StringBuilder a1 = new StringBuilder();
+		final StringBuilder a2 = new StringBuilder();
+		final StringJoiner s = new StringJoiner(", ");
+		constructAlignment(d, x, y, a1, a2, s, x.length(), y.length());
+		System.out.println(a1);
+		System.out.println(a2);
+		System.out.println(s);
 	}
 
-	private static int[][] editDistance(String x, String y) {
+	static int[][] minDistance(String x, String y) {
 		final int m = x.length();
 		final int n = y.length();
-		final int[][] c = new int[m + 1][n + 1];
+		final int[][] d = new int[m + 1][n + 1];
 
-		for (int i = 1; i <= m; i++)
-			c[i][0] = i;
-		for (int j = 0; j <= n; j++)
-			c[0][j] = j;
+		for (int i = 0; i <= m; i++)
+			d[i][0] = i;
+		for (int j = 1; j <= n; j++)
+			d[0][j] = j;
 
 		for (int i = 1; i <= m; i++) {
 			for (int j = 1; j <= n; j++) {
-				// Copy task
+				final int rep = d[i - 1][j - 1] + REPLACE.cost;
+				final int del = d[i - 1][j] + DELETE.cost;
+				final int ins = d[i][j - 1] + INSERT.cost;
 				if (x.charAt(i - 1) == y.charAt(j - 1))
-					c[i][j] = c[i - 1][j - 1];
+					d[i][j] = d[i - 1][j - 1] + COPY.cost;
+				else if (rep <= del && rep <= ins)
+					d[i][j] = rep;
+				else if (ins <= del)
+					d[i][j] = ins;
 				else
-					// Replace, Insert and Delete tasks are considered here.
-					c[i][j] = Math.min(Math.min(c[i - 1][j], c[i][j - 1]), c[i - 1][j - 1]) + 1;
+					d[i][j] = del;
 			}
 		}
-		return c;
+		return d;
 	}
 
-	private static void printAlignment(int[][] c, String x, String y, int i, int j, StringBuilder alignOne,
-			StringBuilder alignTwo) {
-		// Base case of our recursion
+	static void constructAlignment(int[][] d, String x, String y, StringBuilder a1, StringBuilder a2, StringJoiner s,
+			int i, int j) {
 		if (i == 0 && j == 0)
 			return;
-
-		TRANSFORMATION t = null;
-		int iPrev = -1, jPrev = -1;
-		// COPY operation
-		if (i > 0 && j > 0 && x.charAt(i - 1) == y.charAt(j - 1)) {
-			iPrev = i - 1;
-			jPrev = j - 1;
-			t = COPY;
+		if (i > 0 && j > 0 && d[i - 1][j - 1] <= d[i - 1][j] && d[i - 1][j - 1] <= d[i][j - 1]) {
+			constructAlignment(d, x, y, a1, a2, s, i - 1, j - 1);
+			a1.append(x.charAt(i - 1));
+			a2.append(y.charAt(j - 1));
+			if (x.charAt(i - 1) == y.charAt(j - 1))
+				s.add(COPY.toString());
+			else
+				s.add(REPLACE.toString());
+		} else if (j == 0 || (i > 0 && d[i - 1][j] < d[i][j - 1])) {
+			constructAlignment(d, x, y, a1, a2, s, i - 1, j);
+			a1.append(x.charAt(i - 1));
+			a2.append(PLACE_HOLDER);
+			s.add(DELETE.toString());
 		} else {
-			int minCost = Integer.MAX_VALUE;
-			// DELETE operation
-			if (i > 0 && c[i - 1][j] < minCost) {
-				iPrev = i - 1;
-				jPrev = j;
-				minCost = c[i - 1][j];
-				t = DELETE;
-			}
-			// INSERT operation
-			if (j > 0 && c[i][j - 1] < minCost) {
-				iPrev = i;
-				jPrev = j - 1;
-				minCost = c[i][j - 1];
-				t = INSERT;
-			}
-			// REPLACE operation
-			if (i > 0 && j > 0 && c[i - 1][j - 1] < minCost) {
-				iPrev = i - 1;
-				jPrev = j - 1;
-				t = REPLACE;
-			}
+			constructAlignment(d, x, y, a1, a2, s, i, j - 1);
+			a1.append(PLACE_HOLDER);
+			a2.append(y.charAt(j - 1));
+			s.add(INSERT.toString());
 		}
-
-		printAlignment(c, x, y, iPrev, jPrev, alignOne, alignTwo);
-		final char nullCh = '\0';
-		t.apply(alignOne, alignTwo, i > 0 ? x.charAt(i - 1) : nullCh, j > 0 ? y.charAt(j - 1) : nullCh);
-		System.out.print(t);
-		if(i != x.length() || j != y.length())
-			System.out.print(COMMA);
 	}
 
-	static enum TRANSFORMATION {
-		COPY {
-			@Override
-			void apply(StringBuilder alignOne, StringBuilder alignTwo, char source, char target) {
-				alignOne.append(source);
-				alignTwo.append(target);
-			}
-		},
-		REPLACE {
-			@Override
-			void apply(StringBuilder alignOne, StringBuilder alignTwo, char source, char target) {
-				alignOne.append(source);
-				alignTwo.append(target);
-			}
-		},
-		INSERT {
-			@Override
-			void apply(StringBuilder alignOne, StringBuilder alignTwo, char source, char target) {
-				alignOne.append(PLACE_HOLDER);
-				alignTwo.append(target);
-			}
-		},
-		DELETE {
-			@Override
-			void apply(StringBuilder alignOne, StringBuilder alignTwo, char source, char target) {
-				alignOne.append(source);
-				alignTwo.append(PLACE_HOLDER);
-			}
-		};
+	static enum Operation {
+		COPY(0), REPLACE(1), INSERT(1), DELETE(1);
+		final int cost;
 
-		private static final char PLACE_HOLDER = '_';
-
-		abstract void apply(StringBuilder alignOne, StringBuilder alignTwo, char source, char target);
+		Operation(int cost) {
+			this.cost = cost;
+		}
 	}
 }
