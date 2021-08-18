@@ -1,9 +1,6 @@
 package org.clrs.algorithms.dp;
 
-import static org.clrs.algorithms.dp.EditDistance.Transformation.COPY;
-import static org.clrs.algorithms.dp.EditDistance.Transformation.DELETE;
-import static org.clrs.algorithms.dp.EditDistance.Transformation.INSERT;
-import static org.clrs.algorithms.dp.EditDistance.Transformation.REPLACE;
+import static org.clrs.algorithms.dp.EditDistance.Transformation.*;
 
 import java.util.StringJoiner;
 
