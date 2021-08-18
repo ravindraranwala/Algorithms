@@ -1,9 +1,9 @@
 package org.clrs.algorithms.dp;
 
-import static org.clrs.algorithms.dp.EditDistance.Operation.COPY;
-import static org.clrs.algorithms.dp.EditDistance.Operation.DELETE;
-import static org.clrs.algorithms.dp.EditDistance.Operation.INSERT;
-import static org.clrs.algorithms.dp.EditDistance.Operation.REPLACE;
+import static org.clrs.algorithms.dp.EditDistance.Transformation.COPY;
+import static org.clrs.algorithms.dp.EditDistance.Transformation.DELETE;
+import static org.clrs.algorithms.dp.EditDistance.Transformation.INSERT;
+import static org.clrs.algorithms.dp.EditDistance.Transformation.REPLACE;
 
 import java.util.StringJoiner;
 
@@ -82,11 +82,11 @@ class EditDistance {
 		}
 	}
 
-	static enum Operation {
+	static enum Transformation {
 		COPY(0), REPLACE(1), INSERT(1), DELETE(1);
 		final int cost;
 
-		Operation(int cost) {
+		Transformation(int cost) {
 			this.cost = cost;
 		}
 	}
