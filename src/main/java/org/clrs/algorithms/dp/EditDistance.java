@@ -14,7 +14,7 @@ class EditDistance {
 	public static void main(String[] args) {
 		final String x = "AGGCTATCACCTGACCTCCAGGCCGATGCCC";
 		final String y = "TAGCTATCACGACCGCGGTCGATTTGCCCGAC";
-		final int[][] d = minDistance(x, y);
+		final int[][] d = minDistance(x, y, new TransformationCost(0, 1, 1, 1));
 		final int minDist = d[x.length()][y.length()];
 		System.out.println(String.format("Min Edit Distance: %d", minDist));
 		final StringBuilder a1 = new StringBuilder();
@@ -26,23 +26,23 @@ class EditDistance {
 		System.out.println(s);
 	}
 
-	static int[][] minDistance(String x, String y) {
+	static int[][] minDistance(String x, String y, TransformationCost cost) {
 		final int m = x.length();
 		final int n = y.length();
 		final int[][] d = new int[m + 1][n + 1];
 
 		for (int i = 0; i <= m; i++)
-			d[i][0] = i;
+			d[i][0] = i * cost.delete;
 		for (int j = 1; j <= n; j++)
-			d[0][j] = j;
+			d[0][j] = j * cost.insert;
 
 		for (int i = 1; i <= m; i++) {
 			for (int j = 1; j <= n; j++) {
-				final int rep = d[i - 1][j - 1] + REPLACE.cost;
-				final int del = d[i - 1][j] + DELETE.cost;
-				final int ins = d[i][j - 1] + INSERT.cost;
+				final int rep = d[i - 1][j - 1] + cost.replace;
+				final int del = d[i - 1][j] + cost.delete;
+				final int ins = d[i][j - 1] + cost.insert;
 				if (x.charAt(i - 1) == y.charAt(j - 1))
-					d[i][j] = d[i - 1][j - 1] + COPY.cost;
+					d[i][j] = d[i - 1][j - 1] + cost.copy;
 				else if (rep <= del && rep <= ins)
 					d[i][j] = rep;
 				else if (ins <= del)
@@ -80,11 +80,20 @@ class EditDistance {
 	}
 
 	static enum Transformation {
-		COPY(0), REPLACE(1), INSERT(1), DELETE(1);
-		final int cost;
+		COPY, REPLACE, INSERT, DELETE;
+	}
 
-		Transformation(int cost) {
-			this.cost = cost;
+	static class TransformationCost {
+		final int copy;
+		final int replace;
+		final int insert;
+		final int delete;
+
+		TransformationCost(int copy, int replace, int insert, int delete) {
+			this.copy = copy;
+			this.replace = replace;
+			this.insert = insert;
+			this.delete = delete;
 		}
 	}
 }
