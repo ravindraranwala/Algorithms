@@ -45,7 +45,7 @@ class EditDistance {
 					d[i][j] = d[i - 1][j - 1] + cost.copy;
 				else if (rep <= del && rep <= ins)
 					d[i][j] = rep;
-				else if (ins <= del)
+				else if (ins < del)
 					d[i][j] = ins;
 				else
 					d[i][j] = del;
