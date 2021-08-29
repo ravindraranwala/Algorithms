@@ -101,7 +101,7 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	private void minHeapify(int i, int heapSize) {
 		if (heapSize > size)
-			throw new IllegalArgumentException("Heap size cannot be larger than array length.");
+			throw new IllegalArgumentException("Heap size too large.");
 		final int l = left(i);
 		final int r = right(i);
 		int smallest = i;
@@ -120,7 +120,7 @@ public class PriorityQueue<E> implements Queue<E> {
 
 	private void iterativeMinHeapify(int i, int heapSize) {
 		if (heapSize > size)
-			throw new IllegalArgumentException("Heap size cannot be larger than array length.");
+			throw new IllegalArgumentException("Heap size too large.");
 		int smallest = i;
 		while (smallest <= size / 2) {
 			final int l = left(i);

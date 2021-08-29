@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.clrs.algorithms.util.ArrayUtil;
 
-public class K_WayMerge {
+class K_WayMerge {
 	private K_WayMerge() {
 		throw new AssertionError("Non instantiable !");
 	}
