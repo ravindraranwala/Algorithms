@@ -1,6 +1,5 @@
 package org.clrs.algorithms.greedy;
 
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 class FractionalKnapsack {
@@ -13,67 +12,61 @@ class FractionalKnapsack {
 		// Usecase 1.
 		final int[] w = { 20, 10, 30 };
 		final int[] v = { 100, 60, 120 };
-		double[] p = knapsack(w, v, 50);
-		System.out.println(Arrays.toString(p));
+		double p = knapsack(w, v, 50);
+		System.out.println(p);
 
 		// Usecase 2.
 		final int[] w1 = { 40, 10, 20, 24 };
 		final int[] v1 = { 280, 100, 120, 120 };
 		p = knapsack(w1, v1, 60);
-		System.out.println(Arrays.toString(p));
+		System.out.println(p);
 
 		// Usecase 3.
 		p = knapsack(w, v, 60);
-		System.out.println(Arrays.toString(p));
-		
+		System.out.println(p);
+
 		p = knapsack(w, v, 100);
-		System.out.println(Arrays.toString(p));
+		System.out.println(p);
 
 		// Usecase 4.
 		p = knapsack(w, v, 0);
-		System.out.println(Arrays.toString(p));
+		System.out.println(p);
 
 		// Usecase 5.
 		// https://www.javatpoint.com/fractional-knapsack-problem
 		final int w2[] = { 5, 10, 20, 30, 40 };
 		final int v2[] = { 30, 20, 100, 90, 160 };
 		p = knapsack(w2, v2, 60);
-		System.out.println(Arrays.toString(p));
+		System.out.println(p);
 
 		// Usecase 6.
 		// https://www.gatevidyalay.com/fractional-knapsack-problem-using-greedy-approach/
 		final int[] w3 = { 5, 10, 15, 22, 25 };
 		final int[] v3 = { 30, 40, 45, 77, 90 };
 		p = knapsack(w3, v3, 60);
-		System.out.println(Arrays.toString(p));
+		System.out.println(p);
 	}
 
-	static double[] knapsack(int[] w, int[] v, int c) {
+	static double knapsack(int[] w, int[] v, int c) {
 		final int n = w.length;
 		final double[] d = new double[n];
 		for (int i = 0; i < n; i++)
 			d[i] = (double) v[i] / w[i];
-		return knapsack(w, v, c, 0, n - 1, d, 0, 0);
+		return knapsack(w, v, c, 0, n - 1, d);
 	}
 
-	static double[] knapsack(int[] w, int[] v, int c, int p, int r, double[] d, int currW, int currV) {
-		if (r < p) {
-			final double[] res = { p, currW, currV };
-			return res;
-		}
+	static double knapsack(int[] w, int[] v, int c, int p, int r, double[] d) {
+		if (r < p)
+			return 0;
 		int[] k = randomizedPartition(w, v, d, p, r);
 		final int q = k[0];
-		if (c < currW + k[1])
-			return knapsack(w, v, c, q + 1, r, d, currW, currV);
-		else if (currW + k[1] + w[q] < c)
-			return knapsack(w, v, c, p, q - 1, d, currW + k[1] + w[q], currV + k[2] + v[q]);
-		else {
-			final double frac = (double) (c - (k[1] + currW)) / w[q];
-			final double kw = k[1] + currW + frac * w[q];
-			final double kv = k[2] + currV + frac * v[q];
-			final double[] res = { q, kw, kv };
-			return res;
-		}
+		if (c < k[1])
+			return knapsack(w, v, c, q + 1, r, d);
+		else if (k[1] + w[q] < c)
+			return knapsack(w, v, c - k[1] - w[q], p, q - 1, d) + k[2] + v[q];
+		else
+			return k[2] + (double) (c - k[1]) / w[q] * v[q];
+
 	}
 
 	static int[] partition(int[] w, int[] v, double[] d, int p, int r) {
