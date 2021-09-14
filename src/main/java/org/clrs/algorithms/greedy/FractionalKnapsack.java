@@ -45,6 +45,24 @@ class FractionalKnapsack {
 		final int[] v3 = { 30, 40, 45, 77, 90 };
 		p = knapsack(w3, v3, 60);
 		System.out.println(p);
+
+		// Usecase 7.
+		final int[] w4 = { 50 };
+		final int[] v4 = { 100 };
+		p = knapsack(w4, v4, 60);
+		System.out.println(p);
+
+		p = knapsack(w4, v4, 20);
+		System.out.println(p);
+
+		p = knapsack(new int[0], new int[0], 20);
+		System.out.println(p);
+
+		p = knapsack(w, v, 5);
+		System.out.println(p);
+
+		p = knapsack(w, v, 0);
+		System.out.println(p);
 	}
 
 	static double knapsack(int[] w, int[] v, int c) {
