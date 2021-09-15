@@ -81,7 +81,7 @@ class FractionalKnapsack {
 		if (c < k[1])
 			return knapsack(w, v, c, q + 1, r, d);
 		else if (k[1] + w[q] < c)
-			return knapsack(w, v, c - k[1] - w[q], p, q - 1, d) + k[2] + v[q];
+			return k[2] + v[q] + knapsack(w, v, c - k[1] - w[q], p, q - 1, d);
 		else
 			return k[2] + (double) (c - k[1]) / w[q] * v[q];
 
