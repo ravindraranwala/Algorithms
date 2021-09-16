@@ -6,9 +6,9 @@ import java.util.StringJoiner;
 
 import org.clrs.algorithms.util.BinarySearch;
 
-class WeightedActivityScheduling {
+class WeightedIntervalScheduling {
 
-	WeightedActivityScheduling() {
+	WeightedIntervalScheduling() {
 		throw new AssertionError();
 	}
 
