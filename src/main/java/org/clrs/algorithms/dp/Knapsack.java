@@ -72,15 +72,13 @@ class Knapsack {
 	}
 
 	static void findItems(int[][] k, int[] w) {
-		int j = k[1].length - 1;
-		int i = w.length;
+		int j = k[0].length - 1;
 		final StringJoiner r = new StringJoiner(", ", "[", "]");
-		while (k[i][j] != 0) {
-			if (k[i][j] > k[i - 1][j]) {
-				r.add(i + "");
+		for (int i = w.length; 0 < i; i--) {
+			if (k[i - 1][j] < k[i][j]) {
+				r.add(String.valueOf(i));
 				j = j - w[i - 1];
 			}
-			i = i - 1;
 		}
 		System.out.println(r.toString());
 	}
