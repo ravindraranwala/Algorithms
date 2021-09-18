@@ -63,9 +63,10 @@ class Knapsack {
 
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= c; j++) {
-				k[i][j] = k[i - 1][j];
 				if (w[i - 1] <= j)
 					k[i][j] = Math.max(v[i - 1] + k[i - 1][j - w[i - 1]], k[i - 1][j]);
+				else
+					k[i][j] = k[i - 1][j];
 			}
 		}
 		return k;
