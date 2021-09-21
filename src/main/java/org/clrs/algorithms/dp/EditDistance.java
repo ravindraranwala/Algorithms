@@ -56,9 +56,24 @@ class EditDistance {
 
 	static void constructAlignment(int[][] d, String x, String y, StringBuilder a1, StringBuilder a2, StringJoiner s,
 			int i, int j) {
-		if (i == 0 && j == 0)
+		if (i == 0) {
+			for (int k = 0; k < j; k++) {
+				a1.append(PLACE_HOLDER);
+				a2.append(y.charAt(k));
+				s.add(INSERT.toString());
+			}
 			return;
-		if (i > 0 && j > 0 && d[i - 1][j - 1] <= d[i - 1][j] && d[i - 1][j - 1] <= d[i][j - 1]) {
+		}
+		if (j == 0) {
+			for (int k = 0; k < i; k++) {
+				a1.append(x.charAt(k));
+				a2.append(PLACE_HOLDER);
+				s.add(DELETE.toString());
+			}
+			return;
+		}
+
+		if (d[i - 1][j - 1] <= d[i - 1][j] && d[i - 1][j - 1] <= d[i][j - 1]) {
 			constructAlignment(d, x, y, a1, a2, s, i - 1, j - 1);
 			a1.append(x.charAt(i - 1));
 			a2.append(y.charAt(j - 1));
@@ -66,7 +81,7 @@ class EditDistance {
 				s.add(COPY.toString());
 			else
 				s.add(REPLACE.toString());
-		} else if (j == 0 || (i > 0 && d[i - 1][j] < d[i][j - 1])) {
+		} else if (d[i - 1][j] < d[i][j - 1]) {
 			constructAlignment(d, x, y, a1, a2, s, i - 1, j);
 			a1.append(x.charAt(i - 1));
 			a2.append(PLACE_HOLDER);
