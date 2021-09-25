@@ -44,6 +44,17 @@ class WeightedIntervalScheduling {
 		System.out.println(p[n - 1]);
 		as = findActivities(v2, p, a2);
 		System.out.println(as);
+
+		// Usecase 4.
+		final int[] s3 = { 1, 1, 1 };
+		final int[] f3 = { 4, 3, 2 };
+		final int[] v3 = { 5, 4, 6 };
+		final int[] a3 = new int[s2.length];
+		p = schedule(s3, f3, v3, a3);
+		n = s3.length;
+		System.out.println(p[n - 1]);
+		as = findActivities(v3, p, a3);
+		System.out.println(as);
 	}
 
 	static int[] schedule(int[] s, int[] f, int[] v, int[] an) {
@@ -93,7 +104,7 @@ class WeightedIntervalScheduling {
 			}
 		}
 		if (0 < r)
-			s.add(String.valueOf(1));
+			s.add(String.valueOf(a[0]));
 		return s.toString();
 	}
 
