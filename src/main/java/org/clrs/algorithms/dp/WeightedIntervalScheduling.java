@@ -1,7 +1,6 @@
 package org.clrs.algorithms.dp;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringJoiner;
 
 import org.clrs.algorithms.util.BinarySearch;
@@ -52,7 +51,7 @@ class WeightedIntervalScheduling {
 		final Activity[] a = new Activity[n];
 		for (int i = 0; i < n; i++)
 			a[i] = new Activity(s[i], f[i], v[i], i + 1);
-		Arrays.sort(a, Comparator.comparingInt(ac -> ac.f));
+		Arrays.sort(a, (a1, a2) -> Integer.compare(a1.f, a2.f));
 		for (int i = 0; i < n; i++) {
 			s[i] = a[i].s;
 			f[i] = a[i].f;
