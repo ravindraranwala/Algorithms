@@ -76,7 +76,7 @@ class FractionalKnapsack {
 	static double knapsack(int[] w, int[] v, int c, int p, int r, double[] d) {
 		if (r < p)
 			return 0;
-		int[] k = randomizedPartition(w, v, d, p, r);
+		final int[] k = randomizedPartition(w, v, d, p, r);
 		final int q = k[0];
 		if (c < k[1])
 			return knapsack(w, v, c, q + 1, r, d);
