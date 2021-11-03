@@ -49,7 +49,7 @@ class MatrixChainMultiplication {
 			for (int j = 0; j < twoCols; j++) {
 				c[i][j] = 0;
 				for (int k = 0; k < oneCols; k++)
-					c[i][j] += a1[i][k] * a2[k][j];
+					c[i][j] = c[i][j] + a1[i][k] * a2[k][j];
 			}
 		}
 		return c;
