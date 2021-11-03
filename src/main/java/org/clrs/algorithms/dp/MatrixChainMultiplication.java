@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import org.clrs.algorithms.dp.MatrixChainOrder.Tables;
 
-public class MatrixChainMultiplication {
+class MatrixChainMultiplication {
 
-	private MatrixChainMultiplication() {
+	MatrixChainMultiplication() {
 		throw new AssertionError();
 	}
 
@@ -29,24 +29,27 @@ public class MatrixChainMultiplication {
 		// trivial case of the recursion.
 		if (i == j)
 			return matrices[i - 1];
-		final int[][] mOne = matrixChainMultiply(s, i, s[i][j], matrices);
-		final int[][] mTwo = matrixChainMultiply(s, s[i][j] + 1, j, matrices);
+		final int[][] a1 = matrixChainMultiply(s, i, s[i][j], matrices);
+		final int[][] a2 = matrixChainMultiply(s, s[i][j] + 1, j, matrices);
+		return matrixMultiply(a1, a2);
+	}
 
-		final int oneRows = mOne.length;
-		final int oneCols = mOne[0].length;
-		final int twoRows = mTwo.length;
-		final int twoCols = mTwo[0].length;
+	static int[][] matrixMultiply(int[][] a1, int[][] a2) {
+		final int oneRows = a1.length;
+		final int oneCols = a1[0].length;
+		final int twoRows = a2.length;
+		final int twoCols = a2[0].length;
 
 		if (oneCols != twoRows)
 			throw new IllegalStateException("Incompatible Matrices found !");
 
 		// Perform the actual multiplication here.
 		final int[][] c = new int[oneRows][twoCols];
-		for (int p = 0; p < oneRows; p++) {
-			for (int q = 0; q < twoCols; q++) {
-				c[p][q] = 0;
+		for (int i = 0; i < oneRows; i++) {
+			for (int j = 0; j < twoCols; j++) {
+				c[i][j] = 0;
 				for (int k = 0; k < oneCols; k++)
-					c[p][q] += mOne[p][k] * mTwo[k][q];
+					c[i][j] += a1[i][k] * a2[k][j];
 			}
 		}
 		return c;
