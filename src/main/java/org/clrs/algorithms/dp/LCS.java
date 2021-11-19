@@ -1,6 +1,9 @@
 package org.clrs.algorithms.dp;
 
-public final class LCS {
+class LCS {
+	LCS() {
+		throw new AssertionError();
+	}
 
 	public static void main(String[] args) {
 //		final String seqOne = "ABCBDAB";
@@ -8,14 +11,14 @@ public final class LCS {
 
 		final String strandOne = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
 		final String strandTwo = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
-		int[][] c = lcsLength(strandOne, strandTwo);
+		final int[][] c = lcsLength(strandOne, strandTwo);
 		System.out.println(String.format("The length of an LCS of two sequences is: %d",
 				c[strandOne.length()][strandTwo.length()]));
 		printLcs(c, strandOne, strandTwo, strandOne.length(), strandTwo.length());
 	}
 
-	private static void printLcs(int[][] c, String x, String y, int i, int j) {
-		if (i == 0 || j == 0)
+	static void printLcs(int[][] c, String x, String y, int i, int j) {
+		if (c[i][j] == 0)
 			System.out.print("");
 		else if (x.charAt(i - 1) == y.charAt(j - 1)) {
 			printLcs(c, x, y, i - 1, j - 1);
