@@ -8,7 +8,7 @@ public class OptimalBST {
 	public static void main(String[] args) {
 		final double[] p = { Double.NaN, 0.15, 0.10, 0.05, 0.1, 0.2 };
 		final double[] q = { 0.05, 0.1, 0.05, 0.05, 0.05, 0.1 };
-		final int n = 5;
+		final int n = p.length - 1;
 		final Tables tables = optimalBst(p, q, n);
 		System.out.println(String.format("Search cost of Optimal BST is: %s", tables.e[1][n]));
 		// Structure of an optimal binary search tree.
