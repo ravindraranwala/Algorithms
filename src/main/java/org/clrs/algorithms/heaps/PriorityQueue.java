@@ -22,12 +22,7 @@ public class PriorityQueue<E> implements Queue<E> {
 	private final Comparator<? super E> comparator;
 	private E[] a;
 	private int size = 0;
-
-	private PriorityQueue(Comparator<? super E> comparator) {
-		this.comparator = comparator;
-		a = (E[]) new Object[11];
-		a[0] = null; // dummy head
-	}
+	private static final int DEFAULT_INIT_CAP = 10;
 
 	private PriorityQueue(Comparator<? super E> comparator, int initialCapacity) {
 		this.comparator = comparator;
@@ -45,7 +40,7 @@ public class PriorityQueue<E> implements Queue<E> {
 	 *         built using the given comparator
 	 */
 	public static <T> PriorityQueue<T> of(Comparator<? super T> comparator) {
-		return new PriorityQueue<>(comparator);
+		return new PriorityQueue<>(comparator, DEFAULT_INIT_CAP);
 	}
 
 	/**
@@ -57,7 +52,7 @@ public class PriorityQueue<E> implements Queue<E> {
 	 *         built using the natural order of it's elements.
 	 */
 	public static <T extends Comparable<? super T>> PriorityQueue<T> of() {
-		return new PriorityQueue<>(Comparator.naturalOrder());
+		return new PriorityQueue<>(Comparator.naturalOrder(), DEFAULT_INIT_CAP);
 	}
 
 	/**
@@ -219,15 +214,6 @@ public class PriorityQueue<E> implements Queue<E> {
 		return sj.toString();
 	}
 
-	/**
-	 * This implementation returns an array containing all the elements of this
-	 * {@link PriorityQueue}. The runtime type of the returned array is that of the
-	 * specified type.
-	 * 
-	 * @param <T>
-	 * @param clazz The runtime type of the returned array
-	 * @return an array containing all the elements of this {@link PriorityQueue}
-	 */
 	public <T> T[] toArray(Class<T> clazz) {
 		@SuppressWarnings("unchecked")
 		final T[] arr = (T[]) Array.newInstance(clazz, size);

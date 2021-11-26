@@ -5,7 +5,7 @@ package org.clrs.algorithms.heaps;
  * 
  * @author ravindra
  *
- * @param <E>
+ * @param <E> the type of elements in this {@link Queue}
  */
 public interface Queue<E> {
 	/**
@@ -37,4 +37,15 @@ public interface Queue<E> {
 	 *         otherwise.
 	 */
 	boolean isEmpty();
+
+	/**
+	 * This implementation returns an array containing all the elements of this
+	 * {@link Queue}. The runtime type of the returned array is that of the
+	 * specified type.
+	 * 
+	 * @param <T>
+	 * @param clazz The runtime type of the returned array
+	 * @return an array containing all the elements of this {@link Queue}
+	 */
+	public <T> T[] toArray(Class<T> clazz);
 }
