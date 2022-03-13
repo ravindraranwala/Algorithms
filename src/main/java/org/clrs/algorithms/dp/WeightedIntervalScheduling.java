@@ -76,7 +76,7 @@ class WeightedIntervalScheduling {
 			// Note that we need a closed interval here.
 			final int c = BinarySearch.predecessor(f, s[k] + 1);
 			int cv = 0;
-			if (-1 < c)
+			if (c >= 0)
 				cv = p[c];
 			p[k] = Math.max(p[k - 1], cv + v[k]);
 		}
@@ -87,13 +87,13 @@ class WeightedIntervalScheduling {
 		final int n = v.length;
 		int r = p[n - 1];
 		final StringJoiner s = new StringJoiner(", ", "[", "]");
-		for (int i = n - 2; -1 < i; i--) {
+		for (int i = n - 2; i >= 0; i--) {
 			if (p[i] < r) {
 				s.add(String.valueOf(a[i + 1]));
 				r = r - v[i + 1];
 			}
 		}
-		if (0 < r)
+		if (r > 0)
 			s.add(String.valueOf(a[0]));
 		return s.toString();
 	}
