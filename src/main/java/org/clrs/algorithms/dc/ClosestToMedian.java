@@ -9,7 +9,7 @@ class ClosestToMedian {
 	}
 
 	public static void main(String[] args) {
-		final int[] numsOne = { 1, 2, 3, 4, 5, 8, 9, 10, 11 };
+		final int[] numsOne = { 9, 1, 8, 4, 10, 5, 11, 2, 3 };
 		final int[] closestNums = closestPointsToMedian(numsOne, 4);
 		System.out.println(Arrays.toString(closestNums));
 	}
